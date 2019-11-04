@@ -1,0 +1,16 @@
+
+
+#On Local
+Install rsub Sublime3 package:
+On Sublime Text 3, open Package Manager (Ctrl-Shift-P on Linux/Win, Cmd-Shift-P on Mac, Install Package), and search for rsub and install it.
+
+(You may choose whatever editor you want to use)
+
+# SSH to remote server using this command
+ssh -R 52698:localhost:52698 XXXXXXXXXXXXXXXX
+
+# On the Remote Server
+wget https://raw.github.com/aurora/rmate/master/rmate
+chmod +x rmate
+mv rmate ~/bin/
+rmate "file_to_edit"
