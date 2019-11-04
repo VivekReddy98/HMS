@@ -5,9 +5,9 @@ import java.sql.*;
 // https://www.geeksforgeeks.org/establishing-jdbc-connection-in-java/ (Resources to understand JDBC Connectivity)
 public class ConnectDB {
  
-	static final String jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
-	public static Connection conn = null;
-    public static Statement stmt = null;
+	protected static final String jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
+	protected static Connection conn = null;
+    protected static Statement stmt = null;
 
     public ConnectDB()
     {
@@ -20,7 +20,7 @@ public class ConnectDB {
 		}
     }
 
-    public static void connect(String user, String pwd) {
+    public void connect(String user, String pwd) {
 		try {			
 			conn = DriverManager.getConnection(jdbcURL, user, pwd);
 		}
@@ -30,7 +30,7 @@ public class ConnectDB {
     }
     // Ask any OODD Student for the difference between a Query and a Command.
     // ResultSet in the Java abstraction of records recieved from the Database.
-    public static ResultSet execQuery(String cmd) throws SQLException {
+    public ResultSet execQuery(String cmd) throws SQLException {
      if (conn == null)
      {
          System.out.println("Please open a connection to execute a Query");
@@ -40,7 +40,7 @@ public class ConnectDB {
      return rs;
      }
 
-    public static void execCommand(String cmd) throws SQLException {
+    public void execCommand(String cmd) throws SQLException {
      if (conn == null)
      {
          throw new SQLException("Please open a connection to execute a Query");
@@ -50,7 +50,7 @@ public class ConnectDB {
      stmt.close();
     }
 
-    public static void terminate() {
+    public void terminate() {
 
         if (stmt != null)
         {

@@ -1,27 +1,18 @@
-import utilities.ConnectDB;
+import utilities.*;
 import java.sql.*;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import java.io.*;
 
 public class Test {
-	public static void main(String[] args) throws SQLException {
-		ConnectDB CDB = new ConnectDB();
+	public static void main(String[] args) throws SQLException, FileNotFoundException {
+		SQLExec CDB = new SQLExec();
 		CDB.connect("vkarri", "200315262");
-		String cmd;
-		// cmd = "CREATE TABLE COFFEES1 " +
-		// 	   "(COF_NAME VARCHAR(32), SUP_ID INTEGER, " +
-		// 	   "PRICE FLOAT, SALES INTEGER, TOTAL INTEGER)";
-		// CDB.execCommand(cmd);
+		
+		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/v/vkarri/HMC/lib/samplescript.sql");
+		
+		CDB.execCommandScript(path);
 
-		// cmd = "INSERT INTO COFFEES1 " +  "VALUES ('Colombian', 101, 7.99, 0, 0)";
-		// CDB.execCommand(cmd);
-
-		// cmd = "INSERT INTO COFFEES1 " +  "VALUES ('French_Roast', 49, 8.99, 0, 0)";	   
-		// CDB.execCommand(cmd);
-
-		// cmd = "INSERT INTO COFFEES1 " +  "VALUES ('Colombian_Decaf', 101, 8.99, 0, 0)";
-		// CDB.execCommand(cmd);
-
-		cmd = "SELECT COF_NAME, PRICE FROM COFFEES1";
+		String cmd = "SELECT COF_NAME, PRICE FROM COFFEES1";
 		ResultSet rs = CDB.execQuery(cmd);
 
 		while (rs.next()) {
