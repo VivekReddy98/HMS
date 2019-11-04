@@ -1,5 +1,6 @@
 import utilities.ConnectDB;
 import java.sql.*;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class Test {
 	public static void main(String[] args) throws SQLException {
