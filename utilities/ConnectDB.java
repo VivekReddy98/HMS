@@ -7,8 +7,9 @@ public class ConnectDB {
  
 	static final String jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
 	public static Connection conn = null;
+    public static Statement stmt = null;
 
-    public void ConnectDB()
+    public ConnectDB()
     {
     	try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -24,25 +25,22 @@ public class ConnectDB {
 			conn = DriverManager.getConnection(jdbcURL, user, pwd);
 		}
 		catch (Exception e) {
-			System.out.println("Sorry!!! unable to connect to the oracle server");
+			System.out.println(e);
 		}
     }
     // Ask any OODD Student for the difference between a Query and a Command.
     // ResultSet in the Java abstraction of records recieved from the Database.
     public static ResultSet execQuery(String cmd) throws SQLException {
-     Statement stmt = null;
      if (conn == null)
      {
          System.out.println("Please open a connection to execute a Query");
      }
      stmt = conn.createStatement();
      ResultSet rs = stmt.executeQuery(cmd);
-     stmt.close();
      return rs;
      }
 
     public static void execCommand(String cmd) throws SQLException {
-     Statement stmt = null;
      if (conn == null)
      {
          throw new SQLException("Please open a connection to execute a Query");
@@ -53,6 +51,16 @@ public class ConnectDB {
     }
 
     public static void terminate() {
+
+        if (stmt != null)
+        {
+             try {
+                stmt.close();
+            }
+            catch (Exception e) {
+                System.out.println("DB: Unable to close the statement");
+            }
+        }
         if (conn != null) {
             try {
                 conn.close();
