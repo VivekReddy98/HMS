@@ -6,14 +6,6 @@ import java.io.*;
 
 public class SQLExec extends ConnectDB{
 
-	public void connect(String user, String pwd) {
-		try {			
-			super.conn = DriverManager.getConnection(super.jdbcURL, user, pwd);
-		}
-		catch (Exception e) {
-			System.out.println(e);
-		}
-    }
     // Only pass command queries using this method, this wont return anything if you run a query.
     public void execCommandScript(FileReader path) throws SQLException {
 

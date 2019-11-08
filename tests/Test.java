@@ -6,9 +6,9 @@ import java.io.*;
 public class Test {
 	public static void main(String[] args) throws SQLException, FileNotFoundException {
 		SQLExec CDB = new SQLExec();
-		CDB.connect("vkarri", "200315262");
+		CDB.connect();
 		
-		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/v/vkarri/HMS/sql/samplescript.sql");
+		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/s/svshingt/dbms/project1/HMS/sql/samplescript.sql");
 		
 		CDB.execCommandScript(path);
 

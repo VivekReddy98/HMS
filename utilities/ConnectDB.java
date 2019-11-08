@@ -8,6 +8,8 @@ public class ConnectDB {
 	protected static final String jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
 	protected static Connection conn = null;
     protected static Statement stmt = null;
+    public String user = "svshingt";
+    public String pwd = "200312579";
 
     public ConnectDB()
     {
@@ -20,7 +22,7 @@ public class ConnectDB {
 		}
     }
 
-    public void connect(String user, String pwd) {
+    public void connect() {
 		try {			
 			conn = DriverManager.getConnection(jdbcURL, user, pwd);
 		}
