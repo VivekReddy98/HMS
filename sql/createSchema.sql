@@ -77,7 +77,7 @@ CREATE TABLE Facility_Employs_Staff (
 CREATE TABLE Facility_has_Dept (
 		f_id INT,
 		code INT,
-		PRIMARY KEY (f_id, code)
+		PRIMARY KEY (f_id, code),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
 		FOREIGN KEY (code) REFERENCES Service_department ON DELETE CASCADE
 );
@@ -154,9 +154,9 @@ CREATE TABLE Checks_In (
 		checkin_end_time DATE,
 		trtment_start_time DATE,
 		priority VARCHAR2(10) CHECK( priority IN ('High', 'Medium', 'Low')),
-		dis_status VARCHAR2(10) CHECK (dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
+		dis_status VARCHAR2(10) CHECK( dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
 		treatment VARCHAR2(30),
-		neg_exp VARCHAR CHECK( neg_exp IN ('Misdiagnosis', 'Service Not Available')),
+		neg_exp VARCHAR2(30) CHECK( neg_exp IN ('Misdiagnosis', 'Service Not Available')),
 		acknowledged VARCHAR2(30),
 		PRIMARY KEY (v_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility(f_id) ON DELETE SET NULL,
@@ -183,8 +183,8 @@ CREATE TABLE Affected_Info (
 		v_id INT,
 		s_code VARCHAR2(10),
 		b_code INT,
-		duration REAL,
-		is_first BOOLEAN,
+		duration NUMBER,
+		is_first CHAR(1),
 		incident VARCHAR2(30),
 		sev_value INT,
 		PRIMARY KEY (v_id, s_code, b_code),
@@ -210,37 +210,28 @@ CREATE TABLE Referred_to(
 );
 
 CREATE TABLE Referral_Reason(
-		r_id INT
+		r_id INT,
 		v_id INT,
 		PRIMARY KEY (v_id, r_id),
 		FOREIGN KEY (v_id) REFERENCES Checks_In(v_id) ON DELETE CASCADE,
 		FOREIGN KEY (r_id) REFERENCES Reasons(r_id) ON DELETE CASCADE
 );
 
+CREATE TABLE Assessment_Priority ( 
+		asn_id INT,
+		priority VARCHAR2(5) CHECK( priority IN ('High', 'Medium', 'Low')),
+		PRIMARY KEY (asn_id)
+);
+
 CREATE TABLE Assessment_Rules ( 
 		ar_id INT,
 		s_code VARCHAR2(10),
 		b_code INT,
-		severity_val STRING
+		severity_val VARCHAR2(10),
 		PRIMARY KEY (ar_id, s_code, b_code, severity_val),
 		FOREIGN KEY (s_code) REFERENCES symptoms(code) ON DELETE CASCADE,
 		FOREIGN KEY (b_code) REFERENCES body_parts(code) ON DELETE CASCADE,
-		FOREIGN KEY (asn_id) REFERENCES Assessment_Proirity(asn_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Assessment_Priority ( 
-		asn_id INT,
-		priority ENUM('HIGH', 'MEDIUM', 'LOW')
-		PRIMARY KEY (asn_id)
+		FOREIGN KEY (ar_id) REFERENCES Assessment_Priority(asn_id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE Address ( 
-		a_id INT,
-		numb INT,
-		street VARCHAR2(50),
-		city  VARCHAR2(30),
-		state  VARCHAR2(30),
-		country VARCHAR2(30),
-		PRIMARY KEY (a_id)
-);
