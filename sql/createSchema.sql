@@ -1,22 +1,15 @@
-CREATE TABLE Address ( 
-		a_id INT,
-		numb INT,
-		street VARCHAR2(50),
-		city  VARCHAR2(30),
-		state  VARCHAR2(30),
-		country VARCHAR2(30),
-		PRIMARY KEY (a_id)
-);
-
 CREATE TABLE Medical_Facility (
 		f_id INT,
 		name VARCHAR2(30),
 		capacity INT,
 		classification VARCHAR2(10) CHECK( classification IN ('1','2','3')),
 		no_sdepts INT,
-		a_id INT NOT NULL,
-		PRIMARY KEY (f_id),
-		FOREIGN KEY (a_id) REFERENCES Address ON DELETE SET NULL
+		numb INT,
+		street VARCHAR2(50),
+		city  VARCHAR2(30),
+		state  VARCHAR2(30),
+		country VARCHAR2(30),
+		PRIMARY KEY (f_id)
 );
 
 CREATE TABLE Certifications (
@@ -135,12 +128,15 @@ CREATE TABLE Patient (
 		p_id INT,
 		fname VARCHAR2(30),
 		lname VARCHAR2(30),
-		p_info VARCHAR2(30),
 		dob DATE,
-		phone_no INT,
-		a_id INT,
-		PRIMARY KEY (p_id),
-		FOREIGN KEY (a_id) REFERENCES Address ON DELETE SET NULL
+		phone_no VARCHAR2(10),
+		numb INT,
+		street VARCHAR2(50),
+		city  VARCHAR2(30),
+		state  VARCHAR2(30),
+		country VARCHAR2(30),
+		CONSTRAINT unique_login_id UNIQUE (lname, dob, city),
+		PRIMARY KEY (p_id)
 );
 
 CREATE TABLE Checks_In (
