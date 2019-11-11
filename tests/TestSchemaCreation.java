@@ -5,8 +5,8 @@ import java.io.*;
 
 public class TestSchemaCreation {
 	public static void main(String[] args) throws SQLException, FileNotFoundException {
-
-		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/v/vkarri/HMS/sql/createSchema.sql");
+		String userWindows = System.getenv("HMSPATH");
+		FileReader path = new FileReader(userWindows + "sql/createSchema.sql");
 
 		CreateTables CT = new CreateTables();
 
