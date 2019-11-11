@@ -24,6 +24,6 @@ hs_err_pid*
 
 #Environ path File
 setup.sh
-
+.mycshrc
 DBCOnnectionClass
 

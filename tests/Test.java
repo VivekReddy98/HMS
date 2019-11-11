@@ -8,7 +8,7 @@ public class Test {
 		SQLExec CDB = new SQLExec();
 		CDB.connect();
 		
-		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/s/svshingt/dbms/project1/HMS/sql/samplescript.sql");
+		FileReader path = new FileReader("/afs/unity.ncsu.edu/users/s/sgpai2/HMS/sql/samplescript.sql");
 		
 		CDB.execCommandScript(path);
 
