@@ -3,6 +3,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 public class Signup{
     public Signup() {
+
         StaticFunctions.Initialise();
     }
     public void addPatient(String f_name, String l_name, int addr_num, String street, String city, String state,
@@ -48,13 +49,15 @@ public class Signup{
         }
         db.terminate();
     }
-    public void MainView() throws Exception{
+    public void newPatient() throws Exception{
         String f_name, l_name, dob, street, city, state, country, phone_no;
         int addr_num;
         boolean invalidDate;
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.setLenient(false);
-        System.out.println("\n\t\tNew Patient Registration");
+
+        System.out.println("\n\t\tPatient Sign Up");
         System.out.print("Enter First Name: ");
         f_name = StaticFunctions.next();
         StaticFunctions.nextLine();
@@ -62,16 +65,16 @@ public class Signup{
         l_name = StaticFunctions.nextLine();
         System.out.print("Enter Date of Birth (dd/mm/yyyy): ");
         do {
-                dob = StaticFunctions.next();
-                StaticFunctions.nextLine();
-                invalidDate = false;
-                try{
-                    dateFormat.parse(dob.trim());
-                }
-                catch (Exception pe) {
-                    System.out.print("Invalid Date. Enter again: ");
-                    invalidDate = true;
-                }
+            dob = StaticFunctions.next();
+            StaticFunctions.nextLine();
+            invalidDate = false;
+            try{
+                dateFormat.parse(dob.trim());
+            }
+            catch (Exception pe) {
+                System.out.print("Invalid Date. Enter again: ");
+                invalidDate = true;
+            }
         } while(invalidDate);
         System.out.println("\nAddress Details ");
         System.out.print("Enter Address Number: ");
@@ -89,6 +92,29 @@ public class Signup{
         phone_no = StaticFunctions.nextLine();
 
         addPatient(f_name, l_name, addr_num, street, city, state, country, dob, phone_no);
+    }
+    public void MainView() throws Exception{
+        int choice;
+
+        System.out.println("\n\t\tSign Up");
+        System.out.println("1. Sign Up");
+        System.out.println("2. Go Back");
+        do{
+            System.out.print("Enter Choice (1-2): ");
+            choice = StaticFunctions.nextInt();
+            StaticFunctions.nextLine();
+            if(choice != 1 && choice != 2)
+            {
+                System.out.println("Invalid Choice");
+            }
+        }while(choice != 1 && choice != 2);
+        switch(choice) {
+            case 1:
+                newPatient();
+                break;
+            case 2:
+                return;
+        };
     }
 
     public static void main(String[] args) throws Exception
