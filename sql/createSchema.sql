@@ -1,5 +1,5 @@
 CREATE TABLE Medical_Facility (
-		f_id INT,
+		f_id VARCHAR2(20),
 		name VARCHAR2(30),
 		capacity INT,
 		classification VARCHAR2(10) CHECK( classification IN ('1','2','3')),
@@ -19,7 +19,7 @@ CREATE TABLE Certifications (
 );
 
 CREATE TABLE Facility_Certified (
-		f_id INT,
+		f_id VARCHAR2(20),
 		acronym VARCHAR2(3),
 		certifed_date DATE,
 		expiration_date DATE,
@@ -59,7 +59,7 @@ CREATE TABLE Service_department (
 );
 
 CREATE TABLE Facility_Employs_Staff (
-		f_id INT,
+		f_id VARCHAR2(20),
 		e_id VARCHAR2(20),
 		PRIMARY KEY (f_id,e_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
@@ -67,7 +67,7 @@ CREATE TABLE Facility_Employs_Staff (
 );
 
 CREATE TABLE Facility_has_Dept (
-		f_id INT,
+		f_id VARCHAR2(20),
 		code VARCHAR2(20),
 		PRIMARY KEY (f_id, code),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
@@ -141,7 +141,7 @@ CREATE TABLE Patient (
 CREATE TABLE Checks_In (
 		v_id INT,
 		p_id INT,
-		f_id INT,
+		f_id VARCHAR2(20),
 		temp INT,
 		bp_systolic INT,
 		bp_diastolic INT,
@@ -195,7 +195,7 @@ CREATE TABLE Reasons (
 );
 
 CREATE TABLE Referred_to(	
-		f_id INT,
+		f_id VARCHAR2(20),
 		v_id INT,
 		e_id VARCHAR2(20),
 		PRIMARY KEY (v_id),
