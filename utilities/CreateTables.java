@@ -55,4 +55,28 @@ public class CreateTables {
 		sqlexec.terminate();
 	}
 
+	public void FreshTables() throws FileNotFoundException, SQLException
+	{
+		String userWindows = System.getenv("HMSPATH");
+		FileReader pathSchema = new FileReader(userWindows + "sql/createSchema.sql");
+		CreateTables CT = new CreateTables();
+		this.ClearDB();
+		this.CreateTables(pathSchema);
+	}
+
+	public void FreshIncrementTriggers() throws FileNotFoundException, SQLException
+	{
+		String userWindows = System.getenv("HMSPATH");
+		FileReader pathTriggers = new FileReader(userWindows + "sql/triggerAutoIncrement.sql");
+		this.ClearTriggers();
+		this.CreateTriggers(pathTriggers);
+	}
+
+	public void FreshMiscTriggers() throws FileNotFoundException, SQLException
+	{
+		String userWindows = System.getenv("HMSPATH");
+		FileReader pathTriggers = new FileReader(userWindows + "sql/miscTriggers.sql");
+		this.CreateTriggers(pathTriggers);
+	}
+
 }
