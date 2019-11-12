@@ -1,6 +1,8 @@
 package utilities;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
+
 public class Signup{
     public Signup() {
 
@@ -19,7 +21,7 @@ public class Signup{
         String col_city = "city";
         String col_state = "state";
         String col_country = "country";
-
+        ResultSet rs = null;
         String query = "Select p_id from "+ tab_name + " where " +
                 col_fname + " = '" + f_name + "' and " + col_lname + " = '" + l_name + "' and " +
                 col_dob + " = TO_DATE('" + dob +"', 'dd/MM/yyyy') and " +
@@ -28,7 +30,12 @@ public class Signup{
 
         SQLExec db = new SQLExec();
         db.connect();
-        ResultSet rs = db.execQuery(query);
+        try{
+            rs = db.execQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("Error retrieving data from the DB: "+e);
+        }
         if (!rs.next())
         {
             query = "Insert into "+ tab_name + "(" + col_fname + ", " + col_lname + ", " + col_addr_num + ", " +
@@ -37,6 +44,8 @@ public class Signup{
                     "', TO_DATE('" + dob +"','dd/MM/yyyy'))";
             try{
                 db.execCommand(query);
+                System.out.println("\nRegistration successful! Redirecting to main menu.");
+                TimeUnit.SECONDS.sleep(3);
             }
             catch (Exception e) {
 
