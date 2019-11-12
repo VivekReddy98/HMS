@@ -31,7 +31,7 @@ CREATE TABLE Facility_Certified (
 CREATE TABLE Staff (
 		e_id INT,
 		name VARCHAR2(30),
-		designation VARCHAR2(30),
+		designation VARCHAR2(2) CHECK( designation IN ('M','NM')),
 		hire_date  DATE,
 		primary_dept INT NOT NULL,
 		PRIMARY KEY (e_id)
@@ -61,7 +61,8 @@ ALTER TABLE Staff ADD FOREIGN KEY (primary_dept) REFERENCES Service_department(c
 
 
 CREATE TABLE Facility_Employs_Staff (
-		f_id INT,e_id INT,
+		f_id INT,
+		e_id INT,
 		PRIMARY KEY (f_id,e_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
 		FOREIGN KEY (e_id) REFERENCES Staff ON DELETE CASCADE
@@ -151,9 +152,9 @@ CREATE TABLE Checks_In (
 		trtment_start_time DATE,
 		priority VARCHAR2(10) CHECK( priority IN ('High', 'Medium', 'Low')),
 		dis_status VARCHAR2(10) CHECK( dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
-		treatment VARCHAR2(30),
+		treatment VARCHAR2(30) CHECK( treatment IN ('False', 'True')),
 		neg_exp VARCHAR2(30) CHECK( neg_exp IN ('Misdiagnosis', 'Service Not Available')),
-		acknowledged VARCHAR2(30),
+		acknowledged VARCHAR2(30) CHECK(,
 		PRIMARY KEY (v_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility(f_id) ON DELETE SET NULL,
 		FOREIGN KEY (p_id) REFERENCES Patient(p_id) ON DELETE SET NULL
