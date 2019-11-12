@@ -6,7 +6,7 @@ INSERT INTO Staff VALUES ('67001', 'Muscular Rob', 'M', TO_DATE('12/09/1967', 'M
 
 INSERT INTO Staff VALUES ('88001', 'Mechanical Roboto', 'M', TO_DATE('05/18/1988', 'MM/DD/YYYY'), TO_DATE('06/21/2019', 'MM/DD/YYYY'), 'GP000');
 
-INSERT INTO Staff VALUES ('93001', 'Millennium Roberten', 'M', TO_DATE('06/28/1991', 'MM/DD/YYYY'), TO_DATE('09/20/2018', 'MM/DD/YYYY'), 'GP001');
+INSERT INTO Staff VALUES ('93003', 'Millennium Roberten', 'M', TO_DATE('06/28/1991', 'MM/DD/YYYY'), TO_DATE('09/20/2018', 'MM/DD/YYYY'), 'GP001');
 
 INSERT INTO Staff VALUES ('66001', 'Missionary Robinson', 'M', TO_DATE('07/08/1966', 'MM/DD/YYYY'), TO_DATE('10/01/1993', 'MM/DD/YYYY'), 'ER000');
 

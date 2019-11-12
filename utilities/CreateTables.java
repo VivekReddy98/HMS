@@ -67,16 +67,13 @@ public class CreateTables {
 	public void FreshIncrementTriggers() throws FileNotFoundException, SQLException
 	{
 		String userWindows = System.getenv("HMSPATH");
-		FileReader pathTriggers = new FileReader(userWindows + "sql/triggerAutoIncrement.sql");
 		this.ClearTriggers();
+		FileReader pathTriggers = new FileReader(userWindows + "sql/triggerAutoIncrement.sql");
 		this.CreateTriggers(pathTriggers);
-	}
-
-	public void FreshMiscTriggers() throws FileNotFoundException, SQLException
-	{
-		String userWindows = System.getenv("HMSPATH");
-		FileReader pathTriggers = new FileReader(userWindows + "sql/miscTriggers.sql");
-		this.CreateTriggers(pathTriggers);
+		FileReader pathData = new FileReader(userWindows + "sql/staffDataPopulated.sql");
+		this.CreateTables(pathData);
+		FileReader pathmiscTriggers = new FileReader(userWindows + "sql/miscTriggers.sql");
+		this.CreateTables(pathmiscTriggers);
 	}
 
 }

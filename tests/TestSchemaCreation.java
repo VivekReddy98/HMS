@@ -10,8 +10,7 @@ public class TestSchemaCreation {
 			System.out.println("What to do?? \n" + 
 								"0. Just Get the Fuck out of this program \n" +
 				                "1. Create Fresh Tables \n" + 
-				                "2. Create AutoIncrement Triggers \n" +
-				                "3. Create miscTriggers \n");
+				                "2. Create AutoIncrement Triggers \n");
 			String pref = System.console().readLine(); 
 
 			if (pref.equals("1"))
@@ -21,10 +20,6 @@ public class TestSchemaCreation {
 			else if (pref.equals("2"))
 			{
 				CT.FreshIncrementTriggers();
-			}
-			else if (pref.equals("3"))
-			{
-				CT.FreshMiscTriggers();
 			}
 			else if (pref.equals("0"))
 			{
