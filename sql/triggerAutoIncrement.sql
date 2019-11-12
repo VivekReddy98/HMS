@@ -37,8 +37,3 @@ BEGIN
 	INTO :new.e_id
 	FROM dual;
 END; >
-
-
-
-
-v_id
