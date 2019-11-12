@@ -5,19 +5,37 @@ import java.io.*;
 
 public class TestSchemaCreation {
 	public static void main(String[] args) throws SQLException, FileNotFoundException {
-		String userWindows = System.getenv("HMSPATH");
-		FileReader pathSchema = new FileReader(userWindows + "sql/createSchema.sql");
-
-		FileReader pathTriggers = new FileReader(userWindows + "sql/triggerAutoIncrement.sql");
-
 		CreateTables CT = new CreateTables();
+		while (2>1){
+			System.out.println("What to do?? \n" + 
+								"0. Just Get the Fuck out of this program \n" +
+				                "1. Create Fresh Tables \n" + 
+				                "2. Create AutoIncrement Triggers \n" +
+				                "3. Create miscTriggers \n");
+			String pref = System.console().readLine(); 
 
-		// CT.ClearDB();
-
-		// CT.CreateTables(pathSchema);
-
-		CT.ClearTriggers();
-
-		CT.CreateTriggers(pathTriggers);
+			if (pref.equals("1"))
+			{
+				CT.FreshTables();
+			}
+			else if (pref.equals("2"))
+			{
+				CT.FreshIncrementTriggers();
+			}
+			else if (pref.equals("3"))
+			{
+				CT.FreshMiscTriggers();
+			}
+			else if (pref.equals("0"))
+			{
+				break;
+			}
+			else{
+				continue;
+			}
+		    
+		}
+		
 	}
+
 }
