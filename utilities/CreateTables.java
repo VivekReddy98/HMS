@@ -4,13 +4,14 @@ import java.sql.*;
 import java.io.*;
 import utilities.*;
 
-public class CreateTables{
+public class CreateTables {
 
     public SQLExec sqlexec;
 
 	public CreateTables()
 	{
 		sqlexec = new SQLExec();
+		sqlexec.connect();
 	}
 
 	public void ClearDB()
@@ -28,11 +29,30 @@ public class CreateTables{
 		catch (Exception e){
 			System.out.println(e);
 		}
+		sqlexec.terminate();
+	}
+
+	public void ClearTriggers() throws SQLException, FileNotFoundException
+	{
+		sqlexec.connect();
+		String userWindows = System.getenv("HMSPATH");
+		FileReader pathTrigers = new FileReader(userWindows + "sql/removeTriggers.sql");
+		sqlexec.execCommandScript(pathTrigers);
+		sqlexec.terminate();
 	}
 
 	public void CreateTables(FileReader path) throws SQLException
 	{
+		sqlexec.connect();
 		sqlexec.execCommandScript(path);
+		sqlexec.terminate();
+	}
+
+	public void CreateTriggers(FileReader path) throws SQLException
+	{
+		sqlexec.connect();
+		sqlexec.execCommandScript(path, ">");
+		sqlexec.terminate();
 	}
 
 }

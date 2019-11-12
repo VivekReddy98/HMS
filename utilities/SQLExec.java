@@ -15,7 +15,20 @@ public class SQLExec extends ConnectDB{
       	Reader reader = new BufferedReader(path);
 
       	// Run the Script
-      	sr.runScript(reader);
+  		sr.runScript(reader);
+    }
+
+    public void execCommandScript(FileReader path, String delimitter) throws SQLException {
+
+    	ScriptRunner sr = new ScriptRunner(super.conn);
+
+    	sr.setDelimiter(delimitter);
+
+    	//Creating a reader object
+      	Reader reader = new BufferedReader(path);
+
+      	// Run the Script
+  		sr.runScript(reader);	
     }
 }
 
