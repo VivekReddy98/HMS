@@ -30,6 +30,8 @@ public class PatientCheckIn{
         catch (Exception e) {
             System.out.println("Unable to fetch records");
         }
+        listofsymptoms.add("other");
+        listofsymptoms.add("exit");
         System.out.println(""+ listofsymptoms);
 
         do{
@@ -54,7 +56,7 @@ public class PatientCheckIn{
                 System.out.println("Invalid Choice");
             }
             else{
-                System.out.println("Call Sanket's Function");
+                System.out.println("Call Sanket's Function with CODE "+ listofsymptoms.get(choice-1));
             }
         }while(choice != 5);
 
