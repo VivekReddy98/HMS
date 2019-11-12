@@ -20,6 +20,15 @@ public class StaticFunctions {
         return -1;
     }
 
+    public static float nextFloat() {
+        if (sc.hasNextFloat())
+            return sc.nextFloat();
+        else {
+            sc.nextLine();
+        }
+        return -1;
+    }
+
     public static String next() {
         return sc.next();
     }
