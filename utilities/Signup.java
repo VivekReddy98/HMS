@@ -27,26 +27,24 @@ public class Signup{
 
         SQLExec db = new SQLExec();
         db.connect();
-        System.out.println(query);
         ResultSet rs = db.execQuery(query);
         if (!rs.next())
         {
-            query = "Insert into "+ tab_name + "(p_id," + col_fname + ", " + col_lname + ", " + col_addr_num + ", " +
-                    col_street + ", " + col_state + ", " + col_city + ", " + col_dob + ") values (1,'" + f_name +
+            query = "Insert into "+ tab_name + "(" + col_fname + ", " + col_lname + ", " + col_addr_num + ", " +
+                    col_street + ", " + col_state + ", " + col_city + ", " + col_dob + ") values ('" + f_name +
                     "', '" + l_name + "', " + addr_num + ", '" + street + "', '" + state + "', '" + city +
                     "', TO_DATE('" + dob +"','dd/MM/yyyy'))";
-            System.out.println(query);
             try{
                 db.execCommand(query);
             }
             catch (Exception e) {
 
-                System.out.println("Could not enter data into the DB: "+e);
+                System.out.println("Could not insert data into the DB: "+e);
             }
         }
         else
         {
-            System.out.println("Patient already Registered. Please Log In");
+            System.out.println("Patient already registered. Please Log In");
         }
         db.terminate();
     }
@@ -97,7 +95,5 @@ public class Signup{
     {
         Signup ob = new Signup();
         ob.MainView();
-        //ob.addPatient("a","b",3,"qwe","mum","mha","ind","01/01/1996","12321");
-
     }
 }
