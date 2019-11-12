@@ -17,3 +17,28 @@ BEGIN
 	INTO :new.p_id
 	FROM dual;
 END; >
+
+CREATE SEQUENCE visit_id_seq >
+CREATE OR REPLACE TRIGGER visit_insert
+	BEFORE INSERT ON Checks_In
+	FOR EACH ROW
+BEGIN
+	SELECT visit_id_seq.nextval
+	INTO :new.v_id
+	FROM dual;
+END; >
+
+CREATE SEQUENCE staff_id_seq >
+CREATE OR REPLACE TRIGGER staff_insert
+	BEFORE INSERT ON Staff
+	FOR EACH ROW
+BEGIN
+	SELECT staff_id_seq.nextval
+	INTO :new.e_id
+	FROM dual;
+END; >
+
+
+
+
+v_id
