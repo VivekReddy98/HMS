@@ -5,3 +5,4 @@ INSERT INTO Severity VALUES (2, 'Scale');
 INSERT INTO Symptoms VALUES ('11a', 1, 'Pain', 1);
 INSERT INTO Symptoms VALUES ('11b', 1, 'Ache', 2);
 INSERT INTO Symptoms VALUES ('22a', 2, 'Vomit', 2);
+-- INSERT INTO Symptoms VALUES ('99z', 3, 'Other', 2);
