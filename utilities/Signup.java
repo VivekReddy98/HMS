@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 public class Signup{
     public Signup() {
 
-        StaticFunctions.Initialise();
     }
     public void addPatient(String f_name, String l_name, int addr_num, String street, String city, String state,
                            String country, String dob, String phone_no) throws Exception
