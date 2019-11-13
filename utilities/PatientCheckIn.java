@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PatientCheckIn{
+    public int v_id = 1;
+    public int other_flag = 0;
     public PatientCheckIn() {
 
         StaticFunctions.Initialise();
@@ -16,7 +18,7 @@ public class PatientCheckIn{
     public void showSymptops() throws Exception
     {
         //TEMP
-        int visit_id = 1;
+
 
         String temp = "";
         int choice;
@@ -73,7 +75,8 @@ public class PatientCheckIn{
                 System.out.println("Invalid Choice");
             }
             else if(choice == i+1){
-                otherSymptom();
+//                String temp1 = listofsymptoms.get(choice-1);
+                otherSymptom((String)listofsymptoms.get(choice-1));
             }
             else if(choice == i+2){
                 System.out.println("Function for Done choice");
@@ -84,14 +87,14 @@ public class PatientCheckIn{
         }while(choice != i+2);
 
         if (choice == i+2){
-            System.out.println("Insert time into checks in table");
+            System.out.println("Inserting time into checks in table");
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             Date date = new Date();
             String current_time;
             current_time = formatter.format(date);
             current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
-            String update_end_time_query = "UPDATE Checks_In SET checkin_end_time = " +current_time+" WHERE v_id ="+visit_id+"";
-            System.out.println(update_end_time_query);
+            String update_end_time_query = "UPDATE Checks_In SET checkin_start_time = " +current_time+" WHERE v_id ="+v_id+"";
+//            System.out.println(update_end_time_query);
             db.execCommand(update_end_time_query);
 
             System.out.println("--What is validate");
@@ -100,11 +103,23 @@ public class PatientCheckIn{
         }
     }
 
-    public void otherSymptom(){
+    public void otherSymptom(String s_code){
+        if (other_flag == 1){
+            System.out.println("Please select from available symptoms");
+            return;
+        }
+        SQLExec db = new SQLExec();
+        db.connect();
         String description;
         System.out.println("Enter Description: ");
         description = StaticFunctions.nextLine();
-        System.out.println("Query to INSERT into affected table");
+        String query = ("INSERT INTO Affected_Info VALUES ("+v_id+", '"+s_code+"', 'OTH000', NULL, NULL, NULL, '"+description+"', NULL)");
+        try {
+            db.execCommand(query);
+        }catch (Exception e) {
+            System.out.println(e);
+        }
+        other_flag = 1;
     }
 
     public static void main(String[] args) throws Exception

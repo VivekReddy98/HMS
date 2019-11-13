@@ -17,18 +17,25 @@ public class StaffProcessPatient{
     public String displayPatients() throws Exception{
         int choice;
         Vector listofpatients = new Vector();   //To pass code of selected disease
-        String query = "SELECT * FROM ChecksIn";
+        String query = "SELECT * FROM Checks_In";
         SQLExec db = new SQLExec();
         String userWindows = System.getenv("HMSPATH");
-        FileReader pathSchema = new FileReader(userWindows + "sql/populateChecksIn.sql");
+//        FileReader pathSchema = new FileReader(userWindows + "sql/populateChecksIn.sql");
         db.connect();
         //To insert dummy data... run once
 //        db.execCommandScript(pathSchema);
-        ResultSet rs = db.execQuery(query);
+            ResultSet rs = db.execQuery(query);
+
+//        if (!rs.next()){
+//            return "No New Patients";
+//        }
         int i;
         try {
             while(rs.next()) {
-                listofpatients.add(rs.getString("v_id"));
+                System.out.println(rs.getString("treatment"));
+                if(rs.getString("checkin_start_time").length() >1 && rs.getString("treatment").equals("False") ) {
+                    listofpatients.add(rs.getString("v_id"));
+                }
 //                System.out.println(listofpatients);
             }
         }
@@ -41,8 +48,10 @@ public class StaffProcessPatient{
             i = 0;
             try {
                 while (rs.next()) {
-                    ++i;
-                    System.out.println(Integer.toString(i) + ". " + rs.getString("v_id"));
+                    if(rs.getString("checkin_start_time").length() >1 && rs.getString("treatment").equals("False") ) {
+                        ++i;
+                        System.out.println(Integer.toString(i) + ". " + rs.getString("v_id"));
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Unable to fetch records");
@@ -57,6 +66,9 @@ public class StaffProcessPatient{
     }
 
     public void displayMenu(String v_id){
+        if (v_id.equals("No New Patients")){
+            return;
+        }
         int choice;
         System.out.println("SelectedPatiend: "+v_id);
         System.out.println("1. Enter Vitals");
@@ -93,6 +105,7 @@ public class StaffProcessPatient{
 
     public static void main(String[] args) throws Exception
     {
+        System.out.println("Remaining - if user is medical staff");
         StaffProcessPatient ob = new StaffProcessPatient();
         ob.mainView();
     }
