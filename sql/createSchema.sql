@@ -2,7 +2,7 @@ CREATE TABLE Medical_Facility (
 		f_id VARCHAR2(20),
 		name VARCHAR2(30),
 		capacity INT,
-		classification VARCHAR2(10) CHECK( classification IN ('1','2','3')),
+		classification VARCHAR2(10) CHECK( classification IN ('01','02','03')),
 		no_sdepts INT,
 		numb INT,
 		street VARCHAR2(50),
@@ -14,15 +14,15 @@ CREATE TABLE Medical_Facility (
 
 CREATE TABLE Certifications (
 		acronym VARCHAR2(3),
-		name VARCHAR2(30),
+		name VARCHAR2(50),
 		PRIMARY KEY (acronym)
 );
 
 CREATE TABLE Facility_Certified (
 		f_id VARCHAR2(20),
 		acronym VARCHAR2(3),
-		certifed_date DATE,
-		expiration_date DATE,
+		certifed_date DATE DEFAULT NULL,
+		expiration_date DATE DEFAULT NULL,
 		PRIMARY KEY (f_id, acronym),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
 		FOREIGN KEY (acronym) REFERENCES Certifications ON DELETE CASCADE
@@ -179,7 +179,7 @@ CREATE TABLE Affected_Info (
 		s_code VARCHAR2(10),
 		b_code VARCHAR2(20) DEFAULT 'OTH000',
 		duration NUMBER,
-		is_first CHAR(1),
+		is_first VARCHAR2(5) CHECK( is_first IN ('true', 'false')),
 		incident VARCHAR2(30),
 		optional_description VARCHAR2(100) DEFAULT NULL,
 		sev_value INT,
