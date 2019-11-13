@@ -14,7 +14,7 @@ public class StaffProcessPatient{
         StaticFunctions.Initialise();
     }
 
-    public String displayPatients() throws Exception{
+    public int displayPatients() throws Exception{
         int choice;
         Vector listofpatients = new Vector();   //To pass code of selected disease
         String query = "SELECT * FROM Checks_In";
@@ -32,8 +32,7 @@ public class StaffProcessPatient{
         int i;
         try {
             while(rs.next()) {
-                System.out.println(rs.getString("treatment"));
-                if(rs.getString("checkin_start_time").length() >1 && rs.getString("treatment").equals("False") ) {
+                if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
                     listofpatients.add(rs.getString("v_id"));
                 }
 //                System.out.println(listofpatients);
@@ -43,12 +42,15 @@ public class StaffProcessPatient{
             System.out.println(e);
             System.out.println("Unable to fetch records1");
         }
+        if (listofpatients.isEmpty()){
+            return -1;
+        }
         try {
             rs = db.execQuery(query);
             i = 0;
             try {
                 while (rs.next()) {
-                    if(rs.getString("checkin_start_time").length() >1 && rs.getString("treatment").equals("False") ) {
+                    if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
                         ++i;
                         System.out.println(Integer.toString(i) + ". " + rs.getString("v_id"));
                     }
@@ -61,16 +63,18 @@ public class StaffProcessPatient{
         choice = StaticFunctions.nextInt();
         StaticFunctions.nextLine();
 
-//        return listofpatients.get(choice-1);
-        return "Some ID";
+//        return Integer.parseInt(listofpatients.get(choice-1));
+        return 1;
     }
 
-    public void displayMenu(String v_id){
-        if (v_id.equals("No New Patients")){
+    public void displayMenu(int v_id){
+        if (v_id == -1){
+            System.out.println("No New Patients");
+            System.out.println("Logging out");
             return;
         }
         int choice;
-        System.out.println("SelectedPatiend: "+v_id);
+        System.out.println("SelectedPatiend: "+Integer.toString(v_id));
         System.out.println("1. Enter Vitals");
         System.out.println("2. Treat Patient");
         System.out.println("3. Go Back");
@@ -85,10 +89,10 @@ public class StaffProcessPatient{
         }while(choice != 1 && choice != 2 && choice !=3);
         switch(choice) {
             case 1:
-                System.out.println("Go to Enter Vitals Page with v_id");
+                System.out.println("Go to Enter Vitals Page with v_id: "+Integer.toString(v_id));
                 break;
             case 2:
-                System.out.println("Check auth and treat patient Function");
+                System.out.println("Remaining - Check auth and treat patient Function");
                 break;
             case 3:
                 return;
