@@ -16,7 +16,7 @@ public class PatientCheckIn{
     public void showSymptops() throws Exception
     {
         //TEMP
-        String visit_id = "1111AA";
+        int visit_id = 1;
 
         String temp = "";
         int choice;
@@ -89,9 +89,11 @@ public class PatientCheckIn{
             Date date = new Date();
             String current_time;
             current_time = formatter.format(date);
-            current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh:mi:ss')";
-            System.out.println("query => UPDATE Checks_In SET checkin_end_time =" +current_time+" WHERE v_id ='"+visit_id+"'");
-            //String update_end_time_query = "UPDATE Checks_In SET checkin_end_time =" +current_time+" WHERE v_id ='"+visit_id+"'";
+            current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
+            String update_end_time_query = "UPDATE Checks_In SET checkin_end_time = " +current_time+" WHERE v_id ="+visit_id+"";
+            System.out.println(update_end_time_query);
+            db.execCommand(update_end_time_query);
+
             System.out.println("--What is validate");
             System.out.println("--Call Logout");
 
