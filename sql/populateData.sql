@@ -20,8 +20,5 @@ INSERT INTO Symptoms VALUES ('SYM005', 'HED000', 'Lightheadedness', 2);
 INSERT INTO Symptoms VALUES ('SYM006', 'EYE000', 'Blurred vision', 2);
 INSERT INTO Symptoms VALUES ('SYM007', 'OTH000', 'Other', 1);
 
-INSERT INTO Medical_Facility (f_id) VALUES ('III');
-INSERT INTO Patient (lname, dob, city) VALUES ('Smith', TO_DATE('05/18/1988', 'MM/DD/YYYY'), 'Raleigh');
-INSERT INTO Checks_In (p_id, f_id) VALUES (1, 'III');
 
 
