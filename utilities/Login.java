@@ -9,11 +9,9 @@ import java.util.concurrent.TimeUnit;
 public class Login{
     private int pid;
     private String f_name;
-    private int fid;
 
     public Login() {
 
-        StaticFunctions.Initialise();
     }
 
     boolean autheticate(String l_name, String dob, String city) throws Exception{
@@ -40,69 +38,6 @@ public class Login{
         }
         db.terminate();
         return true;
-    }
-
-    public void getMedicalFacility() throws Exception{
-        ResultSet rs = null;
-        String address = ""; int new_fid;
-        List<Integer> fid_list = new ArrayList<>();
-        List<Integer> fid_list2 = new ArrayList<>();
-        boolean invalid = false;
-
-        SQLExec db = new SQLExec();
-        db.connect();
-
-        String query = "Select f_id from Checks_In where p_id = "+pid;
-        try{
-            rs = db.execQuery(query);
-        }
-        catch(Exception e){
-            System.out.println("Error retrieving data from the DB: "+e);
-            return;
-        }
-
-        while(rs.next())
-        {
-            fid_list.add(rs.getInt(fid));
-        }
-
-        query = "Select * from Medical_Facility";
-        try{
-            rs = db.execQuery(query);
-        }
-        catch(Exception e){
-            System.out.println("Error retrieving data from the DB: "+e);
-            return;
-        }
-        System.out.println("\n\t\tMedical Facilities: ");
-        System.out.println("\nID \t Name \t\t\t Address: ");
-        while(rs.next())
-        {
-            System.out.println("nmmn");
-            address = Integer.toString(rs.getInt("numb")) + ", " + rs.getString("street") +
-                      ", " + rs.getString("city") + ", " + rs.getString("state") +  ", " +
-                      rs.getString("country");
-            fid_list2.add(rs.getInt("f_id"));
-            System.out.println("\n"+rs.getInt("f_id")+"\t"+rs.getString("name")+"\t"+address);
-        }
-        if (!fid_list.isEmpty())
-        {
-            System.out.println("\nFacilities already checked in: "+ Arrays.toString(fid_list.toArray()));
-        }
-        do {
-            System.out.print("Enter facility ID to check in: ");
-            new_fid = StaticFunctions.nextInt();
-            StaticFunctions.nextLine();
-            invalid = false;
-            if(!fid_list2.contains(new_fid)){
-                System.out.println("Invalid facility Id. Enter again. ");
-                invalid = true;
-            }
-            else{
-                fid = new_fid;
-            }
-        }while(invalid);
-        db.terminate();
     }
 
     public void signIn() throws Exception{
@@ -132,14 +67,14 @@ public class Login{
         city = StaticFunctions.nextLine();
         if(autheticate(l_name,dob,city))
         {
-            System.out.println("\nHello, "+f_name);
-            getMedicalFacility();
+            Patient p = new Patient(pid,f_name);
+            p.MainView();
         }
         else
         {
             System.out.println("\nInvalid Credentials. Try again.");
             TimeUnit.SECONDS.sleep(3);
-            signIn();
+            MainView();
         }
     }
 
@@ -171,12 +106,5 @@ public class Login{
     {
         Login ob = new Login();
         ob.MainView();
-        //String query = "insert into Medical_Facility(f_id, name, capacity, classification, numb, street, city, state, country) values (1000, 'Wolf Hospital', 300, 3, 2650, 'Wolf Village', 'Raleigh','NC','USA')";
-        //SQLExec db = new SQLExec();
-        //db.connect();
-
-        //db.execCommand(query);
-
-        //db.terminate();
     }
 }

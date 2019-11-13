@@ -36,8 +36,7 @@ public class HMS{
                 case 4:
                     System.out.println("\tArrivederci!");
                     break;
-            }
-            ;
+            };
         }while(choice != 4);
     }
 
