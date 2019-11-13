@@ -15,6 +15,8 @@ CREATE TABLE Medical_Facility (
 CREATE TABLE Certifications (
 		acronym VARCHAR2(3),
 		name VARCHAR2(50),
+		c_date DATE,
+		e_date DATE,
 		PRIMARY KEY (acronym)
 );
 
@@ -30,10 +32,13 @@ CREATE TABLE Facility_Certified (
 
 CREATE TABLE Staff (
 		e_id VARCHAR2(20),
-		name VARCHAR2(30),
+		fname VARCHAR2(30),
+		lname VARCHAR2(30),
 		designation VARCHAR2(2) CHECK( designation IN ('M','NM')),
 		dob DATE,
-		hire_date  DATE,
+		hire_date DATE,
+		addr VARCHAR2(100) DEFAULT NULL,
+		city VARCHAR2(30),
 		primary_dept VARCHAR2(20) NOT NULL,
 		PRIMARY KEY (e_id)
 );
@@ -56,14 +61,6 @@ CREATE TABLE Service_department (
 		director_id VARCHAR2(20) NOT NULL,
 		PRIMARY KEY (code),
 		FOREIGN KEY (director_id) REFERENCES Staff(e_id) ON DELETE SET NULL
-);
-
-CREATE TABLE Facility_Employs_Staff (
-		f_id INT,
-		e_id VARCHAR2(20),
-		PRIMARY KEY (f_id,e_id),
-		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
-		FOREIGN KEY (e_id) REFERENCES Staff ON DELETE CASCADE
 );
 
 CREATE TABLE Facility_has_Dept (
@@ -97,14 +94,14 @@ CREATE TABLE Specialized_For (
 );
 
 CREATE TABLE Services (
-		code INT,
+		code VARCHAR2(20),
 		name VARCHAR2(30),
 		PRIMARY KEY (code)
 );
 
 CREATE TABLE Dept_Provides_Service (
 		sdcode VARCHAR2(20),
-		secode INT,
+		secode VARCHAR2(20),
 		PRIMARY KEY (sdcode,secode),
 		FOREIGN KEY (sdcode) REFERENCES Service_department(code) ON DELETE CASCADE,
 		FOREIGN KEY (secode) REFERENCES Services(code) ON DELETE CASCADE
@@ -116,7 +113,7 @@ CREATE TABLE Equipments (
 );
 
 CREATE TABLE Performed_using (
-		code INT,
+		code VARCHAR2(20),
 		name VARCHAR2(30),
 		PRIMARY KEY (code, name),
 		FOREIGN KEY (code) REFERENCES Services(code) ON DELETE CASCADE,
@@ -150,7 +147,7 @@ CREATE TABLE Checks_In (
 		trtment_start_time TIMESTAMP,
 		priority VARCHAR2(10) CHECK( priority IN ('High', 'Medium', 'Low')),
 		dis_status VARCHAR2(10) CHECK( dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
-		treatment VARCHAR2(30) CHECK( treatment IN ('False', 'True')),
+		treatment VARCHAR2(30) DEFAULT 'False' CHECK( treatment IN ('False', 'True')) ,
 		neg_exp VARCHAR2(30) CHECK( neg_exp IN ('Misdiagnosis', 'Service Not Available')),
 		acknowledged VARCHAR2(30) CHECK( acknowledged IN ('yes', 'no')),
 		PRIMARY KEY (v_id),
@@ -168,7 +165,7 @@ CREATE TABLE Symptoms (
 		code VARCHAR2(10),
 		b_code VARCHAR2(20),
 		name VARCHAR2(30),
-		severity_type  INT,
+		severity_type INT,
 		PRIMARY KEY (code),
 		FOREIGN KEY (b_code) REFERENCES Body_Parts(code) ON DELETE SET NULL,
 		FOREIGN KEY (severity_type) REFERENCES Severity(s_id) ON DELETE SET NULL
@@ -179,10 +176,10 @@ CREATE TABLE Affected_Info (
 		s_code VARCHAR2(10),
 		b_code VARCHAR2(20) DEFAULT 'OTH000',
 		duration NUMBER,
-		is_first VARCHAR2(5) CHECK( is_first IN ('true', 'false')),
+		is_first VARCHAR2(5) CHECK( is_first IN ('true', 'false', NULL)),
 		incident VARCHAR2(30),
 		optional_description VARCHAR2(100) DEFAULT NULL,
-		sev_value INT,
+		sev_value VARCHAR2(30),
 		PRIMARY KEY (v_id, s_code, b_code),
 		FOREIGN KEY (v_id) REFERENCES Checks_In(v_id) ON DELETE CASCADE,
 		FOREIGN KEY (b_code) REFERENCES Body_Parts(code) ON DELETE SET NULL,
@@ -213,9 +210,9 @@ CREATE TABLE Referral_Reason(
 		FOREIGN KEY (r_id) REFERENCES Reasons(r_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Assessment_Priority ( 
+CREATE TABLE Rule_Priority ( 
 		asn_id INT,
-		priority VARCHAR2(5) CHECK( priority IN ('High', 'Medium', 'Low')),
+		priority VARCHAR2(50) CHECK( priority IN ('HIGH', 'NORMAL', 'QUARANTINE')),
 		PRIMARY KEY (asn_id)
 );
 
@@ -223,11 +220,12 @@ CREATE TABLE Assessment_Rules (
 		ar_id INT,
 		s_code VARCHAR2(10),
 		b_code VARCHAR2(20),
-		severity_val INT,
+		comparison CHAR(2) CHECK( comparison IN ('>', '=', '<', '>=', '<=', '!=')),
+		severity_val VARCHAR2(30),
 		PRIMARY KEY (ar_id, s_code, b_code, severity_val),
 		FOREIGN KEY (s_code) REFERENCES symptoms(code) ON DELETE CASCADE,
 		FOREIGN KEY (b_code) REFERENCES body_parts(code) ON DELETE CASCADE,
-		FOREIGN KEY (ar_id) REFERENCES Assessment_Priority(asn_id) ON DELETE CASCADE
+		FOREIGN KEY (ar_id) REFERENCES Rule_Priority(asn_id) ON DELETE CASCADE
 );
 
 

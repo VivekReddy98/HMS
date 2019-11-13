@@ -4,9 +4,20 @@ public class HMS{
     public HMS() {
         StaticFunctions.Initialise();
     }
+    void init(){
+        String query = "ALTER SESSION SET NLS_COMP=LINGUISTIC";
+        SQLExec db = new SQLExec();
+        db.connect();
+        try{
+            db.execCommand(query);
+        }
+        catch(Exception e){
+            System.out.println("Error setting up DB: "+e);
+        }
+        db.terminate();
+    }
     public void MainView() throws Exception{
         int choice;
-
         do {
             System.out.println("\n\t\tMain Menu");
             System.out.println("1. Sign In");

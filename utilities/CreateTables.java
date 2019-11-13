@@ -62,7 +62,7 @@ public class CreateTables {
 		CreateTables CT = new CreateTables();
 		this.ClearDB();
 		this.CreateTables(pathSchema);
-		FileReader pathData = new FileReader(userWindows + "sql/populateData.sql");
+		FileReader pathData = new FileReader(userWindows + "sql/staffDataPopulated.sql");
 		this.CreateTables(pathData);
 	}
 
@@ -72,9 +72,7 @@ public class CreateTables {
 		this.ClearTriggers();
 		FileReader pathTriggers = new FileReader(userWindows + "sql/triggerAutoIncrement.sql");
 		this.CreateTriggers(pathTriggers);
-		FileReader pathData = new FileReader(userWindows + "sql/staffDataPopulated.sql");
-		this.CreateTables(pathData);
-		FileReader pathmiscTriggers = new FileReader(userWindows + "sql/miscTriggers.sql");
+		FileReader pathmiscTriggers = new FileReader(userWindows + "sql/populateData.sql");
 		this.CreateTables(pathmiscTriggers);
 	}
 }
