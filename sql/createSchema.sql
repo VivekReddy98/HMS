@@ -83,13 +83,13 @@ CREATE TABLE Secondary_Works_Dept (
 );
 
 CREATE TABLE Body_Parts (
-		code INT,
+		code VARCHAR2(20),
 		name VARCHAR2(30),
 		PRIMARY KEY (code)
 );
 
 CREATE TABLE Specialized_For (
-		b_code INT,
+		b_code VARCHAR2(20),
 		s_code VARCHAR2(20),
 		PRIMARY KEY (b_code, s_code),
 		FOREIGN KEY (s_code) REFERENCES Service_department(code) ON DELETE CASCADE,
@@ -166,21 +166,22 @@ CREATE TABLE Severity (
 
 CREATE TABLE Symptoms (
 		code VARCHAR2(10),
-		b_code INT,
+		b_code VARCHAR2(20),
 		name VARCHAR2(30),
-		severity_id  INT,
+		severity_type  INT,
 		PRIMARY KEY (code),
 		FOREIGN KEY (b_code) REFERENCES Body_Parts(code) ON DELETE SET NULL,
-		FOREIGN KEY (severity_id) REFERENCES Severity(s_id) ON DELETE SET NULL
+		FOREIGN KEY (severity_type) REFERENCES Severity(s_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Affected_Info (
 		v_id INT,
 		s_code VARCHAR2(10),
-		b_code INT,
+		b_code VARCHAR2(20) DEFAULT 'OTH000',
 		duration NUMBER,
 		is_first CHAR(1),
 		incident VARCHAR2(30),
+		optional_description VARCHAR2(100) DEFAULT NULL,
 		sev_value INT,
 		PRIMARY KEY (v_id, s_code, b_code),
 		FOREIGN KEY (v_id) REFERENCES Checks_In(v_id) ON DELETE CASCADE,
@@ -221,8 +222,8 @@ CREATE TABLE Assessment_Priority (
 CREATE TABLE Assessment_Rules ( 
 		ar_id INT,
 		s_code VARCHAR2(10),
-		b_code INT,
-		severity_val VARCHAR2(10),
+		b_code VARCHAR2(20),
+		severity_val INT,
 		PRIMARY KEY (ar_id, s_code, b_code, severity_val),
 		FOREIGN KEY (s_code) REFERENCES symptoms(code) ON DELETE CASCADE,
 		FOREIGN KEY (b_code) REFERENCES body_parts(code) ON DELETE CASCADE,

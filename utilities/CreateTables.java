@@ -62,6 +62,8 @@ public class CreateTables {
 		CreateTables CT = new CreateTables();
 		this.ClearDB();
 		this.CreateTables(pathSchema);
+		FileReader pathData = new FileReader(userWindows + "sql/populateData.sql");
+		this.CreateTables(pathData);
 	}
 
 	public void FreshIncrementTriggers() throws FileNotFoundException, SQLException
@@ -75,5 +77,4 @@ public class CreateTables {
 		FileReader pathmiscTriggers = new FileReader(userWindows + "sql/miscTriggers.sql");
 		this.CreateTables(pathmiscTriggers);
 	}
-
 }
