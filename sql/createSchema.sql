@@ -1,5 +1,5 @@
 CREATE TABLE Medical_Facility (
-		f_id INT,
+		f_id VARCHAR2(20),
 		name VARCHAR2(30),
 		capacity INT,
 		classification VARCHAR2(10) CHECK( classification IN ('1','2','3')),
@@ -19,7 +19,7 @@ CREATE TABLE Certifications (
 );
 
 CREATE TABLE Facility_Certified (
-		f_id INT,
+		f_id VARCHAR2(20),
 		acronym VARCHAR2(3),
 		certifed_date DATE,
 		expiration_date DATE,
@@ -59,7 +59,7 @@ CREATE TABLE Service_department (
 );
 
 CREATE TABLE Facility_Employs_Staff (
-		f_id INT,
+		f_id VARCHAR2(20),
 		e_id VARCHAR2(20),
 		PRIMARY KEY (f_id,e_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
@@ -67,7 +67,7 @@ CREATE TABLE Facility_Employs_Staff (
 );
 
 CREATE TABLE Facility_has_Dept (
-		f_id INT,
+		f_id VARCHAR2(20),
 		code VARCHAR2(20),
 		PRIMARY KEY (f_id, code),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility ON DELETE CASCADE,
@@ -83,13 +83,13 @@ CREATE TABLE Secondary_Works_Dept (
 );
 
 CREATE TABLE Body_Parts (
-		code INT,
+		code VARCHAR2(20),
 		name VARCHAR2(30),
 		PRIMARY KEY (code)
 );
 
 CREATE TABLE Specialized_For (
-		b_code INT,
+		b_code VARCHAR2(20),
 		s_code VARCHAR2(20),
 		PRIMARY KEY (b_code, s_code),
 		FOREIGN KEY (s_code) REFERENCES Service_department(code) ON DELETE CASCADE,
@@ -141,7 +141,7 @@ CREATE TABLE Patient (
 CREATE TABLE Checks_In (
 		v_id INT,
 		p_id INT,
-		f_id INT,
+		f_id VARCHAR2(20),
 		temp INT,
 		bp_systolic INT,
 		bp_diastolic INT,
@@ -166,21 +166,22 @@ CREATE TABLE Severity (
 
 CREATE TABLE Symptoms (
 		code VARCHAR2(10),
-		b_code INT,
+		b_code VARCHAR2(20),
 		name VARCHAR2(30),
-		severity_id  INT,
+		severity_type  INT,
 		PRIMARY KEY (code),
 		FOREIGN KEY (b_code) REFERENCES Body_Parts(code) ON DELETE SET NULL,
-		FOREIGN KEY (severity_id) REFERENCES Severity(s_id) ON DELETE SET NULL
+		FOREIGN KEY (severity_type) REFERENCES Severity(s_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Affected_Info (
 		v_id INT,
 		s_code VARCHAR2(10),
-		b_code INT,
+		b_code VARCHAR2(20) DEFAULT 'OTH000',
 		duration NUMBER,
 		is_first CHAR(1),
 		incident VARCHAR2(30),
+		optional_description VARCHAR2(100) DEFAULT NULL,
 		sev_value INT,
 		PRIMARY KEY (v_id, s_code, b_code),
 		FOREIGN KEY (v_id) REFERENCES Checks_In(v_id) ON DELETE CASCADE,
@@ -195,7 +196,7 @@ CREATE TABLE Reasons (
 );
 
 CREATE TABLE Referred_to(	
-		f_id INT,
+		f_id VARCHAR2(20),
 		v_id INT,
 		e_id VARCHAR2(20),
 		PRIMARY KEY (v_id),
@@ -221,8 +222,8 @@ CREATE TABLE Assessment_Priority (
 CREATE TABLE Assessment_Rules ( 
 		ar_id INT,
 		s_code VARCHAR2(10),
-		b_code INT,
-		severity_val VARCHAR2(10),
+		b_code VARCHAR2(20),
+		severity_val INT,
 		PRIMARY KEY (ar_id, s_code, b_code, severity_val),
 		FOREIGN KEY (s_code) REFERENCES symptoms(code) ON DELETE CASCADE,
 		FOREIGN KEY (b_code) REFERENCES body_parts(code) ON DELETE CASCADE,
