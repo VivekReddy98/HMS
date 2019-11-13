@@ -1,7 +1,8 @@
-INSERT INTO Severity VALUES (1, '1-10');
-INSERT INTO Severity VALUES (2, 'Normal/Severe');
-INSERT INTO Severity VALUES (3, 'Low/High');
-INSERT INTO Severity VALUES (4, 'Normal/Premium');
+INSERT INTO Severity VALUES (1, '1,2,3,4,5,6,7,8,9,10');
+INSERT INTO Severity VALUES (2, 'Normal,Severe');
+INSERT INTO Severity VALUES (3, 'Low,High');
+INSERT INTO Severity VALUES (4, 'Normal,Premium');
+INSERT INTO Severity VALUES (5, 'Moderate,Heavy');
 
 INSERT INTO Body_Parts VALUES ('ARM000','Left Arm');
 INSERT INTO Body_Parts VALUES ('ARM001','Right Arm');
@@ -18,17 +19,80 @@ INSERT INTO Symptoms VALUES ('SYM003', 'OTH000', 'Fever', 3);
 INSERT INTO Symptoms VALUES ('SYM004', 'OTH000', 'Physical Exam', 4);
 INSERT INTO Symptoms VALUES ('SYM005', 'HED000', 'Lightheadedness', 2);
 INSERT INTO Symptoms VALUES ('SYM006', 'EYE000', 'Blurred vision', 2);
-INSERT INTO Symptoms VALUES ('SYM007', 'OTH000', 'Other', 1);
+INSERT INTO Symptoms VALUES ('SYM007', 'OTH000', 'Bleeding', 5);
+INSERT INTO Symptoms VALUES ('SYM000', 'OTH000', 'Other', 5);
 
 INSERT INTO Medical_Facility (f_id, name, capacity, classification, numb, street, city, state, country) VALUES (1000, 'Wolf Hospital', 300, '03', 2650, 'Wolf Village Way Box 7220', 'Raleigh', 'NC 27695', 'USA');
 INSERT INTO Medical_Facility (f_id, name, capacity, classification, numb, street, city, state, country) VALUES (1001, 'California Health Care', 150, '02', 2500, 'Sacramento Santa', 'Santa Cruz', 'CA 90021', 'USA');
 INSERT INTO Medical_Facility (f_id, name, capacity, classification, numb, street, city, state, country) VALUES (1002, 'Suny Medical Center', 10, '01', 489, 'First Avenue', 'New York', 'New York 10001', 'USA');
 
-INSERT INTO Certifications VALUES ('CSC', 'Comprehensive Stroke Certification');
-INSERT INTO Certifications VALUES ('ISO', 'ISO Certification');
-INSERT INTO Certifications VALUES ('PSC', 'Primary Stroke Certification');
+INSERT INTO Certifications VALUES ('CSC', 'Comprehensive Stroke Certification', TO_DATE('11/12/1990', 'MM/DD/YYYY'), TO_DATE('11/11/2025', 'MM/DD/YYYY'));
+INSERT INTO Certifications VALUES ('ISO', 'ISO Certification', TO_DATE('05/09/2011', 'MM/DD/YYYY'), TO_DATE('02/08/2024', 'MM/DD/YYYY'));
+INSERT INTO Certifications VALUES ('PSC', 'Primary Stroke Certification', TO_DATE('01/01/2018', 'MM/DD/YYYY'), TO_DATE('12/31/2028', 'MM/DD/YYYY'));
 
 INSERT INTO Facility_Certified (f_id, acronym) VALUES (1000, 'CSC');
 INSERT INTO Facility_Certified (f_id, acronym) VALUES (1001, 'ISO');
 INSERT INTO Facility_Certified (f_id, acronym) VALUES (1002, 'ISO');
 INSERT INTO Facility_Certified (f_id, acronym) VALUES (1002, 'PSC');
+
+INSERT INTO Medical_Staff VALUES ('89001');
+INSERT INTO Medical_Staff VALUES ('93001');
+INSERT INTO Medical_Staff VALUES ('67001');
+INSERT INTO Medical_Staff VALUES ('88001');
+INSERT INTO Medical_Staff VALUES ('91001');
+INSERT INTO Medical_Staff VALUES ('66001');
+INSERT INTO Medical_Staff VALUES ('67002');
+
+INSERT INTO Non_Medical_Staff VALUES ('89002');
+INSERT INTO Non_Medical_Staff VALUES ('93002');
+
+INSERT INTO Facility_has_Dept VALUES (1000,'GP000');
+INSERT INTO Facility_has_Dept VALUES (1000,'OP000');
+INSERT INTO Facility_has_Dept VALUES (1000,'SE000');
+INSERT INTO Facility_has_Dept VALUES (1001,'ER000');
+INSERT INTO Facility_has_Dept VALUES (1001,'GP001');
+INSERT INTO Facility_has_Dept VALUES (1002,'ER001');
+
+INSERT INTO Secondary_Works_Dept VALUES ('88001', 'OP000');
+
+INSERT INTO Equipments VALUES ('ER combo rack');
+INSERT INTO Equipments VALUES ('Blood pressure monitor');
+INSERT INTO Equipments VALUES ('thermometer');
+INSERT INTO Equipments VALUES ('Vision Screener');
+
+INSERT INTO Services VALUES ('SER01', 'Emergency');
+INSERT INTO Services VALUES ('SGP01', 'General Practice');
+INSERT INTO Services VALUES ('VIS01', 'Vision');
+
+INSERT INTO Dept_Provides_Service VALUES ('ER000', 'SER01');
+INSERT INTO Dept_Provides_Service VALUES ('GP000', 'SGP01');
+INSERT INTO Dept_Provides_Service VALUES ('GP001', 'SGP01');
+INSERT INTO Dept_Provides_Service VALUES ('OP000', 'VIS01');
+
+INSERT INTO Performed_using VALUES ('SER01', 'ER combo rack');
+INSERT INTO Performed_using VALUES ('SGP01', 'Blood pressure monitor');
+INSERT INTO Performed_using VALUES ('SGP01', 'thermometer');
+INSERT INTO Performed_using VALUES ('VIS01', 'Vision Screener');
+
+INSERT INTO Rule_Priority (priority) VALUES ('HIGH');
+INSERT INTO Assessment_Rules VALUES (1, 'SYM001', 'CST000', '>', '7');
+INSERT INTO Assessment_Rules VALUES (1, 'SYM003', 'OTH000', '=', 'High');
+
+INSERT INTO Rule_Priority (priority) VALUES ('HIGH');
+INSERT INTO Assessment_Rules VALUES (2, 'SYM001', 'HED000', '>', '7');
+INSERT INTO Assessment_Rules VALUES (2, 'SYM006', 'EYE000', '=', 'Normal');
+INSERT INTO Assessment_Rules VALUES (2, 'SYM005', 'HED000', '=', 'Normal');
+
+INSERT INTO Rule_Priority (priority) VALUES ('NORMAL');
+INSERT INTO Assessment_Rules VALUES (3, 'SYM001', 'HED000', '<=', '7');
+INSERT INTO Assessment_Rules VALUES (3, 'SYM006', 'EYE000', '=', 'Normal');
+
+INSERT INTO Specialized_For VALUES ('EYE000', 'OP000');
+
+INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('John','Smith', TO_DATE('01/01/1990', 'MM/DD/YYYY'), '9007004567', '100', 'Avent Ferry Rd', 'Raleigh', 'North Carolina', 'US');
+
+INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('Jane','Doe', TO_DATE('02/29/2000', 'MM/DD/YYYY'), '9192453245', '1016', 'Lexington Rd', 'New York', 'New York', 'US');
+
+INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('Rock','Star', TO_DATE('08/31/1970', 'MM/DD/YYYY'), '5403127893', '1022', 'Amphitheatre Parkway', 'Mountain View','California', 'US');
+
+INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('Sheldon','Cooper', TO_DATE('05/26/1984', 'MM/DD/YYYY'), '6184628437', '1210', 'Sacramento', 'Santa Cruz', 'California', 'US');
