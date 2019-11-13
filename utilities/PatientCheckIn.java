@@ -9,7 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PatientCheckIn{
-    public int v_id = 1;
+    public int v_id = 1;         //TEMP
+
     public int other_flag = 0;
     public PatientCheckIn() {
 
@@ -17,9 +18,6 @@ public class PatientCheckIn{
     }
     public void showSymptops() throws Exception
     {
-        //TEMP
-
-
         String temp = "";
         int choice;
         Vector listofsymptoms = new Vector();   //To pass code of selected disease
