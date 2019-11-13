@@ -101,7 +101,7 @@ public class PatientSymptom{
         catch (Exception e) {
             System.out.println("Unable to fetch records");
         }
-        sevType = "High, Low";
+        //sevType = "High, Low";
         String[] levels = sevType.split(",");
 
         System.out.println("Enter the severity level:");
@@ -147,7 +147,7 @@ public class PatientSymptom{
 
     public void insertIntoAffected(String vid, String symCode, String bodyPartCode, String duration, String isFirst, String severityValue, String incident) throws Exception{
     	String query = "Insert into Affected_Info (v_id, s_code, b_code, duration, is_first, incident, sev_value ) values (" + vid + 
-        ",'" + symCode + "', '" + bodyPartCode + "', " + duration + ", '" + isFirst + "', '" + incident + "', " + severityValue + ")";
+        ",'" + symCode + "', '" + bodyPartCode + "', " + duration + ", '" + isFirst + "', '" + incident + "', '" + severityValue + "')";
         //System.out.println(""+query);
 
         SQLExec db = new SQLExec();
