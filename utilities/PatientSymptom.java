@@ -1,32 +1,178 @@
 package utilities;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.*;
+import java.io.*;
+import utilities.*;
+
 public class PatientSymptom{
 	public PatientSymptom() {
 
         StaticFunctions.Initialise();
     }
 
-    public String bodyPartMenu(String symCode){
-    	String query = "Select b.name from Body_Parts b, Symptoms s where b.code =  s.b_code and s.code = '" + symCode + "'";
-    	
-    	//System.out.println(query);
+    public String bodyPartMenu(String symCode) throws Exception{
 
-    	return "B1";
+    	String query = "Select * from Body_Parts b, Symptoms s where b.code =  s.b_code and s.code = '" + symCode + "'";
+
+    	SQLExec db = new SQLExec();
+    	db.connect();
+        ResultSet rs = db.execQuery(query);
+
+        int choice;
+        ArrayList<String> bparts = new ArrayList<String>();
+        int i = 0;
+
+    	try {
+            while(rs.next()) {
+            	//-------------If body part implicit------------------------
+            	if(!rs.getString("name").equals("Nothing Specific")){
+            		System.out.println("Body part for this symptom is:" + rs.getString("name"));
+            		StaticFunctions.nextLine();
+            		return rs.getString("code");
+            	}
+            	//-------------If body part implicit(end)------------------------
+
+            	//------------If user entering body part----------------------
+
+            	else{
+
+
+            		query = "Select * from Body_Parts";
+            		ResultSet rs1 = db.execQuery(query);
+            		try{
+	            		while(rs1.next() && !rs1.getString("name").equals("Nothing Specific")){
+	            			++i;
+	            			System.out.println(Integer.toString(i)+". "+rs1.getString("name"));
+	            			bparts.add(rs1.getString("code"));
+	            		}
+
+	            	}
+	            	catch (Exception e) {
+	            		System.out.println("Unable to fetch all body parts");
+	            	}
+
+
+	            	do{
+
+		            	System.out.println("Enter number corresponding to body part:");
+		            	choice = StaticFunctions.nextInt();
+		            	StaticFunctions.nextLine();
+		            	if(choice < 1 || choice > i) {
+	                		System.out.println("Invalid Choice");
+	            		}
+	            		else{
+	            			return bparts.get(--choice);
+	            		}
+
+	            	}while(choice < 1 || choice > i);
+
+
+            	}
+
+            	//-------------------If user entering body part(end)------------------------------------
+            }
+        }
+
+
+        catch (Exception e) {
+            System.out.println("Unable to fetch corresponding body part record");
+        }
+    	return "Default";
     }
 
-    public int severityMenu(String symCode){
-    	return 10;
+
+    public String severityMenu(String symCode) throws Exception{
+
+    	String query = "Select sev.type from Severity sev, Symptoms s where sev.s_id = s.severity_type and s.code = '" + symCode + "'";
+    	SQLExec db = new SQLExec();
+    	db.connect();
+        ResultSet rs = db.execQuery(query);
+        String sevType = "";
+        int sevValue ;
+        int i = 0;
+
+        try {
+            while(rs.next()) {
+                //System.out.println(""+rs.getString("type"));
+                sevType = rs.getString("type");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Unable to fetch records");
+        }
+        //sevType = "High, Low";
+        String[] levels = sevType.split(",");
+
+        System.out.println("Enter the severity level:");
+
+        for(String level : levels){
+            ++i;
+            System.out.println(Integer.toString(i) + ")\t"  + level);
+        }
+
+        sevValue = StaticFunctions.nextInt();
+        
+
+        // switch(sevType){                                        //Add more cases
+        // 	case "1-10":
+        // 		do{
+        // 			System.out.println("Enter Severity value 1-10");
+        // 			sevValue = StaticFunctions.nextInt();
+        // 			StaticFunctions.nextLine();
+
+        // 			if (sevValue<1 || sevValue > 10){
+        // 				System.out.println("Invalid Choice");
+        // 			}
+
+        // 		}while(sevValue<1 || sevValue > 10);
+
+        // 		break;
+
+        // 	case "Low/High":
+	       //  	do{
+	       //  		System.out.println("Select one: \n1.Heavy\n2.Light:");
+	       //  		sevValue = StaticFunctions.nextInt();
+	       //  		StaticFunctions.nextLine();
+	       //  	}while(sevValue<1 || sevValue > 2);
+
+	       //  	break;
+
+	       //  default:
+	       //  	sevValue = 1;
+        // };
+
+    	return levels[--sevValue];
     }
 
-    public void MainView(String symCode){
+    public void insertIntoAffected(String vid, String symCode, String bodyPartCode, String duration, String isFirst, String severityValue, String incident) throws Exception{
+    	String query = "Insert into Affected_Info (v_id, s_code, b_code, duration, is_first, incident, sev_value ) values (" + vid + 
+        ",'" + symCode + "', '" + bodyPartCode + "', " + duration + ", '" + isFirst + "', '" + incident + "', '" + severityValue + "')";
+        //System.out.println(""+query);
+
+        SQLExec db = new SQLExec();
+        db.connect();
+
+        try{
+                db.execCommand(query);
+        }
+        
+        catch (Exception e) {
+
+                System.out.println("Could not insert data into the DB: "+e);
+        }
+
+    }
+
+    public void MainView(String symCode) throws Exception{
+
     	int choice;
     	int flag1, flag2, flag3, flag4, flag5;
     	flag1 = flag2 = flag3 = flag4 = flag5 = 0;
-    	String bodyPart = "";
+    	String bodyPartCode = "";
     	float duration = 0;
     	Boolean isFirst = true;
-    	int severityValue = 10;
+    	String severityValue = "";
     	String incident = "";
     	do{
 	        System.out.println("\n\t\tEnter metadata for selected symptom");
@@ -51,7 +197,7 @@ public class PatientSymptom{
 	        switch(choice) {
 
 	            case 1:
-	                bodyPart = bodyPartMenu(symCode);
+	                bodyPartCode = bodyPartMenu(symCode);
 	                flag1 = 1;
 	                break;
 	            case 2:
@@ -75,12 +221,13 @@ public class PatientSymptom{
 	            	break;
 	            case 6:
 	            	if(flag1*flag2*flag3*flag4*flag5 == 0){
-	        			System.out.println("Please finish entering all the metadata");
+	        			System.out.println("\n\n\t\tPlease finish entering all the metadata!!");
 	        		}
 	        		else{
 	        			//return bodyPart, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident
-	        			System.out.println("" + bodyPart + "" + duration + "" + isFirst + "" + severityValue + "" + incident);
-	        			break;
+	        			//System.out.println("" + bodyPart + "" + duration + "" + isFirst + "" + severityValue + "" + incident);
+	        			insertIntoAffected("1", symCode, bodyPartCode, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident);
+                        return;
 	        		}
 	        		break;
 	        };
@@ -90,7 +237,10 @@ public class PatientSymptom{
     public static void main(String[] args) throws Exception
     {
         PatientSymptom ps = new PatientSymptom();
-        ps.MainView("sym01");
+        ps.MainView("SYM001");
+        //ps.insertIntoAffected("1", "SYM001", "ARM000", "3.0", "true", "5", "Incident");
+        //System.out.println(""+ps.severityMenu("SYM002"));
+        System.out.println("Back to prev screen");
     }
 
 }
