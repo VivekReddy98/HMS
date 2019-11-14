@@ -1,6 +1,5 @@
 package utilities;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.*;
 import utilities.*;
@@ -43,7 +42,7 @@ public class PatientSymptom{
             		try{
 	            		while(rs1.next() && !rs1.getString("name").equals("Nothing Specific")){
 	            			++i;
-	            			System.out.println(Integer.toString(i)+". "+rs1.getString("name"));
+	            			System.out.println(Integer.toString(i) + ". " + rs1.getString("name"));
 	            			bparts.add(rs1.getString("code"));
 	            		}
 
@@ -85,9 +84,11 @@ public class PatientSymptom{
     public String severityMenu(String symCode) throws Exception{
 
     	String query = "Select sev.type from Severity sev, Symptoms s where sev.s_id = s.severity_type and s.code = '" + symCode + "'";
+
     	SQLExec db = new SQLExec();
     	db.connect();
         ResultSet rs = db.execQuery(query);
+        
         String sevType = "";
         int sevValue ;
         int i = 0;
@@ -224,7 +225,6 @@ public class PatientSymptom{
 	        			System.out.println("\n\n\t\tPlease finish entering all the metadata!!");
 	        		}
 	        		else{
-	        			//return bodyPart, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident
 	        			//System.out.println("" + bodyPart + "" + duration + "" + isFirst + "" + severityValue + "" + incident);
 	        			insertIntoAffected("1", symCode, bodyPartCode, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident);
                         return;
