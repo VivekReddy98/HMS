@@ -9,15 +9,15 @@ import java.util.concurrent.TimeUnit;
 public class Login{
     private int pid;
     private String f_name;
-
+    private String l_name, dob, city;
     public Login() {
 
     }
 
-    boolean autheticate(String l_name, String dob, String city) throws Exception{
+    boolean autheticate() throws Exception{
         ResultSet rs = null;
         String query = "Select p_id, fname from Patient where lname = '" + l_name + "' and dob = TO_DATE('" +
-                dob +"', 'dd/MM/yyyy') and city = '"+ city +"'";
+                dob +"', 'MM/dd/yyyy') and city = '"+ city +"'";
         SQLExec db = new SQLExec();
         db.connect();
 
@@ -41,16 +41,15 @@ public class Login{
     }
 
     public void signIn() throws Exception{
-        String l_name, dob, city;
         boolean invalidDate;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         dateFormat.setLenient(false);
 
         System.out.println("\n\t\tPatient Sign In");
         System.out.print("Enter Last Name: ");
         l_name = StaticFunctions.nextLine();
-        System.out.print("Enter Date of Birth (dd/mm/yyyy): ");
+        System.out.print("Enter Date of Birth (mm/dd/yyyy): ");
         do {
             dob = StaticFunctions.next();
             StaticFunctions.nextLine();
@@ -65,22 +64,11 @@ public class Login{
         } while(invalidDate);
         System.out.print("Enter City: ");
         city = StaticFunctions.nextLine();
-        if(autheticate(l_name,dob,city))
-        {
-            Patient p = new Patient(pid,f_name);
-            p.MainView();
-        }
-        else
-        {
-            System.out.println("\nInvalid Credentials. Try again.");
-            TimeUnit.SECONDS.sleep(3);
-            MainView();
-        }
     }
 
     public void MainView() throws Exception{
         int choice;
-
+        signIn();
         System.out.println("\n\t\tSign In");
         System.out.println("1. Sign In");
         System.out.println("2. Go Back");
@@ -95,7 +83,17 @@ public class Login{
         }while(choice != 1 && choice != 2);
         switch(choice) {
             case 1:
-                signIn();
+                if(autheticate())
+                {
+                    Patient p = new Patient(pid,f_name);
+                    p.MainView();
+                }
+                else
+                {
+                    System.out.println("Invalid Credentials. Try again.");
+                    TimeUnit.SECONDS.sleep(2);
+                    MainView();
+                }
                 break;
             case 2:
                 return;
