@@ -56,7 +56,7 @@ public class AddSeverity {
 		boolean dont_terminate = true;
 		SeveLevels = new ArrayList<String>();
 
-		System.out.println("\n\t\tMain Menu");
+		System.out.println("\n\t\t Menu to add a New Severity Scale");
 		System.out.println("1. Add a Level for this scale");
 		System.out.println("2. There are no more levels for this scale");
 		System.out.println("3. Go Back");
