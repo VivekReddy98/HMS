@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StaffProcessPatient{
+    private static String staff_id = "88001";
     public StaffProcessPatient() {
 
         StaticFunctions.Initialise();
@@ -31,7 +32,8 @@ public class StaffProcessPatient{
 
         try {
             while(rs.next()) {
-                if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
+//                if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
+                if(rs.getString("checkin_start_time") != null) {
                     listofpatients.add(rs.getString("v_id"));
                 }
 //                System.out.println(listofpatients);
@@ -50,7 +52,8 @@ public class StaffProcessPatient{
             i = 0;
             try {
                 while (rs.next()) {
-                    if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
+//                    if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
+                    if(rs.getString("checkin_start_time") != null) {
                         ++i;
                         System.out.println(Integer.toString(i) + ". " + rs.getString("v_id"));
                     }
@@ -61,13 +64,9 @@ public class StaffProcessPatient{
         }catch (Exception e) {}
 
         ////////////////////////////////////////////////////
-        System.out.println("\n1. Enter Vitals");
-        System.out.println("2. Treat Patient");
-        System.out.println("3. Go Back");
-
 
         do {
-            System.out.print("\nEnter the ID of patient to select :");
+            System.out.print("\nEnter the ID of patient to select: ");
             choice = StaticFunctions.nextInt();
             StaticFunctions.nextLine();
             if (choice == 3){
@@ -81,6 +80,13 @@ public class StaffProcessPatient{
                 System.out.println("Enter Correct Patient ID");
             }
         }while (true);
+
+        
+        System.out.println("\n1. Enter Vitals");
+        System.out.println("2. Treat Patient");
+        System.out.println("3. Go Back");
+
+
         do{
             System.out.print("\nEnter Choice (1-3): ");
             choice_opt = StaticFunctions.nextInt();
@@ -101,7 +107,7 @@ public class StaffProcessPatient{
                 System.out.println("Bye");
                 return;
         };
-
+    db.terminate();
     };
 
 
@@ -112,10 +118,18 @@ public class StaffProcessPatient{
                 System.out.println("Remaining - Go to Enter Vitals Page with v_id: "+Integer.toString(v_id));
                 break;
             case 2:
-                System.out.println("Remaining - Check auth and treat patient Function");
-                if (!treatPatient(v_id)){
+//                System.out.println("Remaining - Check auth and treat patient Function");
+                if (!treatPatient(v_id)) {
                     System.out.println("Inadequate Privilege");
                     displayPatients();
+                }
+                else{
+                    SQLExec db = new SQLExec();
+                    db.connect();
+                    String query_toUpdateTreatmentDone = "UPDATE Checks_In SET treatment = 'True' WHERE v_id = "+v_id+"";
+                    db.execCommand(query_toUpdateTreatmentDone);
+                    System.out.println("TreatmentDone");
+                    db.terminate();
                 }
                 break;
             case 3:
@@ -124,7 +138,48 @@ public class StaffProcessPatient{
     }
 
     public boolean treatPatient(int v_id) throws  Exception{
+        SQLExec db = new SQLExec();
+        db.connect();
+        String query_getBodyPartsFromAffected = "SELECT b_code FROM Affected_Info WHERE v_id ="+v_id+"";
+//        System.out.println(query_getBodyPartsFromAffected);
+        ResultSet rs = db.execQuery(query_getBodyPartsFromAffected);
+        while (rs.next()){
+            String b_code = rs.getString("b_code");
+//            System.out.println(b_code);
+            String query_getDeptId1 = "SELECT * FROM Staff, Specialized_For SF WHERE Staff.e_id ='"+staff_id+"' AND Staff.primary_dept = SF.s_code AND SF.b_code ='"+b_code+"'";
+//            System.out.println(query_getDeptId1);
+            ResultSet rs_getDeptId1 = db.execQuery(query_getDeptId1);
+
+            String query_getDeptId2 = "SELECT * FROM Secondary_Works_Dept, Specialized_For SF WHERE Secondary_Works_Dept.e_id ='"+staff_id+"' AND Secondary_Works_Dept.code = SF.s_code AND SF.b_code ='"+b_code+"'";
+//            System.out.println(query_getDeptId2);
+            ResultSet rs_getDeptId2 = db.execQuery(query_getDeptId2);
+            if (rs_getDeptId1.next() || rs_getDeptId2.next()){
+//                System.out.println("RERURNING TRUE");
+                db.terminate();
+                return true;
+            }
+
+        }
+//        System.out.println("RERURNING FALSE");
+        db.terminate();
         return false;
+    }
+
+    public boolean checkIfStaff(String staff_id) throws Exception{
+        SQLExec db = new SQLExec();
+        db.connect();
+
+        String query = "SELECT * FROM Staff WHERE e_id='"+staff_id+"' AND designation = 'M'";
+        ResultSet rs = db.execQuery(query);
+        if (!rs.next()){
+            db.terminate();
+            return false;
+        }
+        else {
+            db.terminate();
+            return true;
+        }
+
     }
 
     public void mainView() throws Exception{
@@ -135,8 +190,12 @@ public class StaffProcessPatient{
 
     public static void main(String[] args) throws Exception
     {
-        System.out.println("Remaining - if user is medical staff");
         StaffProcessPatient ob = new StaffProcessPatient();
-        ob.mainView();
+        if (ob.checkIfStaff(staff_id)) {
+            ob.mainView();
+        }
+        else{
+            System.out.println("Sorry! Only Medical Staff Allowed");
+        }
     }
 }
