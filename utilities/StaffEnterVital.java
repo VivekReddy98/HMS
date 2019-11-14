@@ -18,7 +18,7 @@ public class StaffEnterVital{
     }
 
     public void enterDetails(){
-        System.out.println("Enter Following Details");
+        System.out.println("Enter Following Details for Patient with ID: "+v_id);
         System.out.print("\nA. Temperature: ");
         temperature = StaticFunctions.nextInt();
         System.out.print("B. Systolic blood pressure: ");
