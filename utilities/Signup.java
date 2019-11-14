@@ -23,7 +23,7 @@ public class Signup{
         ResultSet rs = null;
         String query = "Select p_id from "+ tab_name + " where " +
                 col_fname + " = '" + f_name + "' and " + col_lname + " = '" + l_name + "' and " +
-                col_dob + " = TO_DATE('" + dob +"', 'dd/MM/yyyy') and " +
+                col_dob + " = TO_DATE('" + dob +"', 'MM/dd/yyyy') and " +
                 col_addr_num + " = " + addr_num + " and " + col_street + " = '" + street + "' and " +
                 col_state + " = '" + state + "' and " + col_city + " = '" + city + "'";
 
@@ -62,7 +62,7 @@ public class Signup{
         int addr_num;
         boolean invalidDate;
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         dateFormat.setLenient(false);
 
         System.out.println("\n\t\tPatient Sign Up");
