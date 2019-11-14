@@ -85,15 +85,15 @@ public class PatientCheckIn{
         }while(choice != i+2);
 
         if (choice == i+2){
-            System.out.println("Inserting time into checks in table");
+            System.out.println("Inserting start time into checks in table");
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             Date date = new Date();
             String current_time;
             current_time = formatter.format(date);
             current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
-            String update_end_time_query = "UPDATE Checks_In SET checkin_start_time = " +current_time+" WHERE v_id ="+v_id+"";
-//            System.out.println(update_end_time_query);
-            db.execCommand(update_end_time_query);
+            String update_start_time_query = "UPDATE Checks_In SET checkin_start_time = " +current_time+" WHERE v_id ="+v_id+"";
+//            System.out.println(update_start_time_query);
+            db.execCommand(update_start_time_query);
 
             System.out.println("--What is validate");
             System.out.println("--Call Logout");

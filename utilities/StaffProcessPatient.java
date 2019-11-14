@@ -59,27 +59,41 @@ public class StaffProcessPatient{
                 System.out.println("Unable to fetch records");
             }
         }catch (Exception e) {}
+        System.out.println("\n Enter the ID of patient to select");
+        do {
+            choice = StaticFunctions.nextInt();
+            StaticFunctions.nextLine();
+            if (choice == 0){
+                return -2;
+            }
+            if (listofpatients.contains(Integer.toString(choice))) {
+                return choice;
+            }
+            else{
+                System.out.println("Enter Correct Patient ID or Enter 0 to go back");
+            }
+        }while (true);
 
-        choice = StaticFunctions.nextInt();
-        StaticFunctions.nextLine();
-
-//        return Integer.parseInt(listofpatients.get(choice-1));
-        return 1;
     }
 
     public void displayMenu(int v_id){
         if (v_id == -1){
-            System.out.println("No New Patients");
+            System.out.println("\nNo New Patients");
+            System.out.println("Logging out");
+            return;
+        }
+        if (v_id == -2) {
+            System.out.println("\nThank You");
             System.out.println("Logging out");
             return;
         }
         int choice;
-        System.out.println("SelectedPatiend: "+Integer.toString(v_id));
+        System.out.println("\nSelected Patiend ID: "+Integer.toString(v_id));
         System.out.println("1. Enter Vitals");
         System.out.println("2. Treat Patient");
         System.out.println("3. Go Back");
         do{
-            System.out.print("Enter Choice (1-3): ");
+            System.out.print("\nEnter Choice (1-3): ");
             choice = StaticFunctions.nextInt();
             StaticFunctions.nextLine();
             if(choice != 1 && choice != 2 && choice != 3)
