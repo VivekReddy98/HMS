@@ -5,9 +5,10 @@ import java.io.*;
 import utilities.*;
 
 public class PatientSymptom{
-	public PatientSymptom() {
-
-        StaticFunctions.Initialise();
+	private int vid;
+	public PatientSymptom(int vid) {
+        //StaticFunctions.Initialise();
+		this.vid = vid;
     }
 
     public String bodyPartMenu(String symCode) throws Exception{
@@ -21,7 +22,7 @@ public class PatientSymptom{
         int choice;
         ArrayList<String> bparts = new ArrayList<String>();
         int i = 0;
-
+		System.out.println();
     	try {
             while(rs.next()) {
             	//-------------If body part implicit------------------------
@@ -54,14 +55,14 @@ public class PatientSymptom{
 
 	            	do{
 
-		            	System.out.println("Enter number corresponding to body part:");
+		            	System.out.print("Enter body part number:");
 		            	choice = StaticFunctions.nextInt();
 		            	StaticFunctions.nextLine();
 		            	if(choice < 1 || choice > i) {
 	                		System.out.println("Invalid Choice");
 	            		}
 	            		else{
-	            			return bparts.get(--choice);
+	            			return bparts.get(choice - 1);
 	            		}
 
 	            	}while(choice < 1 || choice > i);
@@ -77,6 +78,8 @@ public class PatientSymptom{
         catch (Exception e) {
             System.out.println("Unable to fetch corresponding body part record");
         }
+
+        db.terminate();
     	return "Default";
     }
 
@@ -113,40 +116,13 @@ public class PatientSymptom{
         }
 
         sevValue = StaticFunctions.nextInt();
-        
 
-        // switch(sevType){                                        //Add more cases
-        // 	case "1-10":
-        // 		do{
-        // 			System.out.println("Enter Severity value 1-10");
-        // 			sevValue = StaticFunctions.nextInt();
-        // 			StaticFunctions.nextLine();
-
-        // 			if (sevValue<1 || sevValue > 10){
-        // 				System.out.println("Invalid Choice");
-        // 			}
-
-        // 		}while(sevValue<1 || sevValue > 10);
-
-        // 		break;
-
-        // 	case "Low/High":
-	       //  	do{
-	       //  		System.out.println("Select one: \n1.Heavy\n2.Light:");
-	       //  		sevValue = StaticFunctions.nextInt();
-	       //  		StaticFunctions.nextLine();
-	       //  	}while(sevValue<1 || sevValue > 2);
-
-	       //  	break;
-
-	       //  default:
-	       //  	sevValue = 1;
-        // };
+        db.terminate();
 
     	return levels[--sevValue];
     }
 
-    public void insertIntoAffected(String vid, String symCode, String bodyPartCode, String duration, String isFirst, String severityValue, String incident) throws Exception{
+    public void insertIntoAffected(String symCode, String bodyPartCode, String duration, String isFirst, String severityValue, String incident) throws Exception{
     	String query = "Insert into Affected_Info (v_id, s_code, b_code, duration, is_first, incident, sev_value ) values (" + vid + 
         ",'" + symCode + "', '" + bodyPartCode + "', " + duration + ", '" + isFirst + "', '" + incident + "', '" + severityValue + "')";
         //System.out.println(""+query);
@@ -163,6 +139,8 @@ public class PatientSymptom{
                 System.out.println("Could not insert data into the DB: "+e);
         }
 
+        db.terminate();
+
     }
 
     public void MainView(String symCode) throws Exception{
@@ -176,7 +154,7 @@ public class PatientSymptom{
     	String severityValue = "";
     	String incident = "";
     	do{
-	        System.out.println("\n\t\tEnter metadata for selected symptom");
+	        System.out.println("\n\tMetadata for selected symptom");
 	        System.out.println("1. Body Part");
 	        System.out.println("2. Duration");
 	        System.out.println("3. Reoccurring?");
@@ -202,12 +180,12 @@ public class PatientSymptom{
 	                flag1 = 1;
 	                break;
 	            case 2:
-	            	System.out.println("Enter number of days since symptoms showed up.");
+	            	System.out.print("Enter number of days since symptoms showed up: ");
 	            	duration = StaticFunctions.nextFloat();
 	            	flag2 = 1;
 	            	break;
 	            case 3:
-	            	System.out.println("Is it a reoccurring symptom? (Enter 1 if yes, 2 if no)");
+	            	System.out.print("Is it a reoccurring symptom? (Enter 1 if yes, 2 if no): ");
 	            	isFirst = StaticFunctions.nextInt() == 1;
 	            	flag3 = 1;
 	            	break;
@@ -226,7 +204,7 @@ public class PatientSymptom{
 	        		}
 	        		else{
 	        			//System.out.println("" + bodyPart + "" + duration + "" + isFirst + "" + severityValue + "" + incident);
-	        			insertIntoAffected("1", symCode, bodyPartCode, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident);
+	        			insertIntoAffected(symCode, bodyPartCode, String.valueOf(duration), String.valueOf(isFirst), String.valueOf(severityValue), incident);
                         return;
 	        		}
 	        		break;
@@ -236,11 +214,7 @@ public class PatientSymptom{
 
     public static void main(String[] args) throws Exception
     {
-        PatientSymptom ps = new PatientSymptom();
-        ps.MainView("SYM001");
-        //ps.insertIntoAffected("1", "SYM001", "ARM000", "3.0", "true", "5", "Incident");
-        //System.out.println(""+ps.severityMenu("SYM002"));
-        System.out.println("Back to prev screen");
+
     }
 
 }

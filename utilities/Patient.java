@@ -111,6 +111,23 @@ public class Patient{
         return 1;
     }
 
+    public int getVid()throws Exception {
+        ResultSet rs = null;
+        SQLExec db = new SQLExec();
+        db.connect();
+        String query = "Select v_id from Checks_In where p_id = "+pid+" and f_id = "+fid+" and acknowledged = 'no'";
+        try{
+            rs = db.execQuery(query);
+        }
+        catch(Exception e){
+            System.out.println("Error retrieving data from the DB: "+e);
+            db.terminate();
+            return -1;
+        }
+        rs.next();
+        return rs.getInt("v_id");
+    }
+
     public int checkOut()throws Exception{
         ResultSet rs = null;
         SQLExec db = new SQLExec();
@@ -151,7 +168,10 @@ public class Patient{
                 case 1:
                     result = checkIn();
                     if(result == 1) {
-                        System.out.println("Check In Successful!");
+                        int vid = getVid();
+                        PatientCheckIn pc = new PatientCheckIn(vid);
+                        pc.MainView();
+                        return;
                     }
                     else if(result == 0){
                         System.out.println("\nYou have already checked in this facility.");

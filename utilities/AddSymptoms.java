@@ -44,10 +44,12 @@ public class AddSymptoms{
         		System.out.println("Invalid Choice");
     		}
     		else{
-    			bPartCode = bparts.get(--choice);
+    			bPartCode = bparts.get(choice - 1);
     		}
 
     	}while(choice < 1 || choice > i);
+
+        db.terminate();
 
     	return bPartCode;
     }
@@ -84,19 +86,21 @@ public class AddSymptoms{
         		System.out.println("Invalid Choice");
     		}
     		else{
-    			sevType = scales.get(--choice);
+    			sevType = scales.get(choice - 1);
     		}
-
+    		System.out.println(choice);
     	}while(choice < 1 || choice > i);
+
+        db.terminate();
 
     	return sevType;
     }
 
 
 
-    public void insertIntoSymptoms(String symName, String bPartCode, int sevType) throws Exception{
+    public void insertIntoSymptoms(String symCode, String symName, String bPartCode, int sevType) throws Exception{
 
-    	String query = "Insert into Symptoms (b_code, name, severity_type) values ('" + bPartCode + "','" + symName + "', " + sevType + ")";
+    	String query = "Insert into Symptoms (code, b_code, name, severity_type) values ('" + symCode + "','" + bPartCode + "','" + symName + "', " + sevType + ")";
     	//String query = "Insert into Symptoms (code, b_code, name, severity_type) values ('SYM999','" + bPartCode + "','" + symName + "', " + sevType + ")";
         System.out.println(""+query);
 
@@ -120,6 +124,7 @@ public class AddSymptoms{
     	String bPartCode = "";
     	int sevType = 0;
     	int choice = 0;
+    	String symCode = "";
 
     	do{
 
@@ -138,9 +143,9 @@ public class AddSymptoms{
     	System.out.println("Enter the severity scale associated with this symptom:");
     	sevType = severityMenu();
 
-    	//Clear screen
+    	//Clear the screen
     	System.out.print("\033[H\033[2J");  
-    	System.out.flush();
+   		System.out.flush();
 
     	//Show Menu
     	do{
@@ -154,9 +159,33 @@ public class AddSymptoms{
     		}
     	}while(choice != 1 && choice != 2);
 
+
+    	String query = "Select * from Symptoms order by code asc";
+
+    	SQLExec db = new SQLExec();
+    	db.connect();
+        ResultSet rs = db.execQuery(query);
+
+        try {
+
+            while(rs.next()) {
+
+  				symCode = rs.getString("code");
+  				
+			}
+        }
+
+        catch (Exception e) {
+            System.out.println("Unable to fetch max symptom: " + e);
+        }
+
     	if(choice == 1){
-    		insertIntoSymptoms(symName, bPartCode, sevType);
+    		int temp = Integer.parseInt(symCode.substring(3, 6)) + 1;
+    		symCode = String.format("%s%03d", symCode.substring(0, 3),temp);
+    		insertIntoSymptoms(symCode, symName, bPartCode, sevType);
     	}
+
+    	db.terminate();
 
     	return;
     }
