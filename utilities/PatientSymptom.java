@@ -61,7 +61,7 @@ public class PatientSymptom{
 	                		System.out.println("Invalid Choice");
 	            		}
 	            		else{
-	            			return bparts.get(--choice);
+	            			return bparts.get(choice - 1);
 	            		}
 
 	            	}while(choice < 1 || choice > i);
