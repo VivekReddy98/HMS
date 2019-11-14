@@ -78,6 +78,8 @@ public class PatientSymptom{
         catch (Exception e) {
             System.out.println("Unable to fetch corresponding body part record");
         }
+
+        db.terminate();
     	return "Default";
     }
 
@@ -114,35 +116,8 @@ public class PatientSymptom{
         }
 
         sevValue = StaticFunctions.nextInt();
-        
 
-        // switch(sevType){                                        //Add more cases
-        // 	case "1-10":
-        // 		do{
-        // 			System.out.println("Enter Severity value 1-10");
-        // 			sevValue = StaticFunctions.nextInt();
-        // 			StaticFunctions.nextLine();
-
-        // 			if (sevValue<1 || sevValue > 10){
-        // 				System.out.println("Invalid Choice");
-        // 			}
-
-        // 		}while(sevValue<1 || sevValue > 10);
-
-        // 		break;
-
-        // 	case "Low/High":
-	       //  	do{
-	       //  		System.out.println("Select one: \n1.Heavy\n2.Light:");
-	       //  		sevValue = StaticFunctions.nextInt();
-	       //  		StaticFunctions.nextLine();
-	       //  	}while(sevValue<1 || sevValue > 2);
-
-	       //  	break;
-
-	       //  default:
-	       //  	sevValue = 1;
-        // };
+        db.terminate();
 
     	return levels[--sevValue];
     }
@@ -163,6 +138,8 @@ public class PatientSymptom{
 
                 System.out.println("Could not insert data into the DB: "+e);
         }
+
+        db.terminate();
 
     }
 

@@ -49,6 +49,8 @@ public class AddSymptoms{
 
     	}while(choice < 1 || choice > i);
 
+        db.terminate();
+
     	return bPartCode;
     }
 
@@ -89,6 +91,8 @@ public class AddSymptoms{
     		System.out.println(choice);
     	}while(choice < 1 || choice > i);
 
+        db.terminate();
+
     	return sevType;
     }
 
@@ -100,7 +104,7 @@ public class AddSymptoms{
     	//String query = "Insert into Symptoms (code, b_code, name, severity_type) values ('SYM999','" + bPartCode + "','" + symName + "', " + sevType + ")";
         System.out.println(""+query);
 
-  /**      SQLExec db = new SQLExec();
+        SQLExec db = new SQLExec();
         db.connect();
 
         try{
@@ -110,7 +114,7 @@ public class AddSymptoms{
         catch (Exception e) {
 
                 System.out.println("Could not insert data into the DB: "+e);
-        }**/
+        }
 
     }
 
