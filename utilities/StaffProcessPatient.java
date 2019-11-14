@@ -81,7 +81,7 @@ public class StaffProcessPatient{
             }
         }while (true);
 
-        
+
         System.out.println("\n1. Enter Vitals");
         System.out.println("2. Treat Patient");
         System.out.println("3. Go Back");
