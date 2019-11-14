@@ -15,6 +15,7 @@ public class TreatedPatient{
 
     	int choice;
         ArrayList<Integer> vid_list = new ArrayList<Integer>();
+        ArrayList<String> pat_list = new ArrayList<String>();
         int i = 0;
         int vid = 1;
         int fid = 0;
@@ -38,16 +39,17 @@ public class TreatedPatient{
 
         //--------------Display Patient List----------------
 
-        String query2 = "Select v_id from Checks_In where treatment = 'True' and f_id = " + fid;
+        String query2 = "Select c.v_id, p.fname, p.lname from Checks_In c, Patient p where c.treatment = 'True' and c.p_id = p.p_id and c.f_id = " + fid;
         ResultSet rs2 = db.execQuery(query2);
-       // System.out.println(query2);
-        System.out.println("\t\tList of treated patients:");
+        
+        System.out.println("\t\tList of treated patients in your facility:");
 
         try {
             while(rs2.next()) {
             	++i;
-            	System.out.println(Integer.toString(i) + ". " + rs2.getString("v_id"));
+            	System.out.println(Integer.toString(i) + ". " + rs2.getString("fname") + " " + rs2.getString("lname"));
                 vid_list.add(rs2.getInt("v_id"));
+                pat_list.add(rs2.getString("fname") + " " + rs2.getString("lname"));
             }
         }
 
@@ -56,7 +58,7 @@ public class TreatedPatient{
         }
 
         System.out.println("Enter the number corresponding to the patient for check out:");
-        System.out.println("i:" + i);
+
         do{
         	choice = StaticFunctions.nextInt();
         	StaticFunctions.nextLine();
@@ -74,7 +76,7 @@ public class TreatedPatient{
     	//-----------------Display Menu-------------------------
 
     	System.out.println("\t\tMenu");
-    	System.out.println("1. Check out");
+    	System.out.println("1. Check out patient: " + pat_list.get(choice - 1));
     	System.out.println("2. Go Back");
 
     	do{
@@ -96,6 +98,8 @@ public class TreatedPatient{
     		}
 
     	}while(choice != 1 && choice != 2);
+
+    	db.terminate();
     	
     }
 
