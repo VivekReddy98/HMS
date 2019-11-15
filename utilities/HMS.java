@@ -1,56 +1,37 @@
 package utilities;
-
-public class HMS{
+public class HMS {
     public HMS() {
         StaticFunctions.Initialise();
-    }
-    void init(){
-        String query = "ALTER SESSION SET NLS_COMP=LINGUISTIC";
-        SQLExec db = new SQLExec();
-        db.connect();
-        try{
-            db.execCommand(query);
-        }
-        catch(Exception e){
-            System.out.println("Error setting up DB: "+e);
-        }
-        db.terminate();
     }
     public void MainView() throws Exception{
         int choice;
         do {
             System.out.println("\n\t\tMain Menu");
-            System.out.println("1. Sign In");
-            System.out.println("2. Sign Up");
-            System.out.println("3. Demo Queries");
-            System.out.println("4. Exit");
+            System.out.println("1. Patient");
+            System.out.println("2. Staff");
+            System.out.println("3. Exit");
             do {
-                System.out.print("Enter Choice (1-4): ");
+                System.out.print("Choose Role(1-3): ");
                 choice = StaticFunctions.nextInt();
                 StaticFunctions.nextLine();
-                if (choice < 1 || choice > 4) {
+                if (choice < 1 || choice > 3) {
                     System.out.println("Invalid Choice");
                 }
-            } while (choice < 1 || choice > 4);
+            } while (choice < 1 || choice > 3);
             switch (choice) {
                 case 1:
-                    Login ob = new Login();
+                    PatientHome ob = new PatientHome();
                     ob.MainView();
                     break;
                 case 2:
-                    Signup ob2 = new Signup();
-                    ob2.MainView();
+                    //Staff Home
                     break;
                 case 3:
-                    System.out.println("Coming Soon!");
-                    break;
-                case 4:
                     System.out.println("\tArrivederci!");
                     break;
             };
-        }while(choice != 4);
+        }while(choice != 3);
     }
-
     public static void main(String[] args) throws Exception
     {
         HMS ob = new HMS();
