@@ -7,16 +7,17 @@ import utilities.*;
 
 public class NegativeExperience{
 
+
     public NegativeExperience() {
 
         StaticFunctions.Initialise();
     }
 
-    public void MainView(int vid) throws Exception{
+    public void MainView(ReportDS r_obj) throws Exception{
         String query = "";
         int choice;
-        SQLExec db = new SQLExec();
-        db.connect();
+        // SQLExec db = new SQLExec();
+        // db.connect();
 
         do{
             System.out.println("\n\t\tAdd Negative Experience");
@@ -47,17 +48,23 @@ public class NegativeExperience{
             		System.out.println("Enter a description for this negative experience:");
             		desc = StaticFunctions.nextLine();
 
-                    query = "Update Checks_In set neg_code = " + choice1 + " , neg_exp = '" + desc + "' where v_id = " + vid;
+                    query = "Update Checks_In set neg_code = " + choice1 + " , neg_exp = '" + desc + "' where v_id = " + r_obj.vid;
 
-                    try{
-                        db.execCommand(query);
-                    }catch (Exception e) {
-                        System.out.println("Could not update entry: "+e);
-                    }
-                    System.out.println(query);
+                    r_obj.n_code = choice1;
+                    r_obj.n_description = desc;
+                    r_obj.Q_negex = query;
 
-                    db.terminate();
-                    return;
+
+                    // try{
+                    //     db.execCommand(query);
+                    // }catch (Exception e) {
+                    //     System.out.println("Could not update entry: "+e);
+                    // }
+                    // System.out.println(query);
+
+                    // db.terminate();
+
+                    break;
 
                 case 2:
 
@@ -70,13 +77,14 @@ public class NegativeExperience{
 
         }while(choice != 2);
 
-        return;
+        return ;
     }
-Update Checks_In set neg_code = 0 , neg_exp = 'Unsanitary rooms' where v_id = 1;
 
     public static void main(String[] args) throws Exception
     {
         NegativeExperience ne = new NegativeExperience();
-        ne.MainView(1);
+        ReportDS r_obj = new ReportDS();
+        ne.MainView(r_obj);
+        System.out.println(r_obj.n_description);
     }
 }

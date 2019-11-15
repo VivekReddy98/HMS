@@ -7,6 +7,9 @@ import utilities.*;
 
 public class StaffPatientReport{
 
+
+    ReportDS r_obj = new ReportDS();
+
     public StaffPatientReport() {
 
         StaticFunctions.Initialise();
@@ -17,6 +20,7 @@ public class StaffPatientReport{
         int choice;
         SQLExec db = new SQLExec();
         db.connect();
+        r_obj.vid = vid;
 
         do{
             System.out.println("\n");
@@ -34,6 +38,11 @@ public class StaffPatientReport{
             switch(choice) {
                 case 1:
                     System.out.print("Discharge Status page");
+                    //Testing------------------------
+                    DischargeStatus spr = new DischargeStatus();
+                    spr.MainView(r_obj);
+                    System.out.println("Test:\t" + r_obj.Q_discharge);
+                    //----------------------------------
                     break;
                 case 2:
                     System.out.print("Referral Status page");
@@ -43,14 +52,17 @@ public class StaffPatientReport{
                     System.out.print("Enter treatment description:");
                     trmt_desc = StaticFunctions.nextLine();
                     String query = "Update Checks_In set trmt_description = '" + trmt_desc + "' where v_id = " + vid;
-			        try{
-			                db.execCommand(query);
-			        }
+			        // try{
+			        //         db.execCommand(query);
+			        // }
 			        
-			        catch (Exception e) {
+			        // catch (Exception e) {
 
-			                System.out.println("Could not update entry: "+e);
-			        }
+			        //         System.out.println("Could not update entry: "+e);
+			        // }
+
+                    r_obj.trmt_description = trmt_desc;
+                    r_obj.Q_trmt = query;
 
                     break;
                     
@@ -60,7 +72,22 @@ public class StaffPatientReport{
                 case 5:
                     return;
                 case 6:
-                    System.out.print("Submit, Staff Patient report confirmation page.");
+
+                    System.out.print("\033[H\033[2J");  
+                    System.out.flush();
+
+
+                    System.out.println("-----------------------------------Report--------------------------------");
+                    System.out.println("Discharge Status:\t" + r_obj.discharge_status);
+                    System.out.println("Referral Status:\t");
+                    System.out.println("Treatment given:\t" + r_obj.trmt_description);
+                    System.out.println("Negative Experience Code\t:" + r_obj.n_code);
+                    System.out.println("Negative Experience description\t:" + r_obj.n_description);
+                    System.out.println("-------------------------------------------------------------------------");
+
+
+                    System.out.println("Confirm?");
+
                     break;
                 default:
                     System.out.print("Invalid Choice, Please try again");

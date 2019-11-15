@@ -14,6 +14,7 @@ public class ReportDS {
 	public ArrayList<ArrayList< String>> Referral_Reasons;
 	public int n_code;
 	public String n_description;
+	public int vid = 1;
 
 	public ArrayList<String> Q_Ref_Reasons;
 	public String Q_Ref_to;
