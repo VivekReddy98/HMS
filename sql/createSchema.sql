@@ -146,7 +146,7 @@ CREATE TABLE Checks_In (
 		checkin_end_time TIMESTAMP,
 		trtment_start_time TIMESTAMP,
 		priority VARCHAR2(10) CHECK( priority IN ('High', 'Medium', 'Low')),
-		dis_status VARCHAR2(10) CHECK( dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
+		dis_status VARCHAR2(25) CHECK( dis_status IN ('Treated Successfully', 'Deceased', 'Referred')),
 		treatment VARCHAR2(30) DEFAULT 'false' CHECK( treatment IN ('false', 'true')) ,
 		trmt_description VARCHAR2(100) DEFAULT NULL,
 		neg_exp VARCHAR2(30) CHECK( neg_exp IN ('Misdiagnosis', 'Service Not Available')),
