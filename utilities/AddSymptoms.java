@@ -8,7 +8,6 @@ public class AddSymptoms{
 
 	public AddSymptoms() {
 
-        StaticFunctions.Initialise();
     }
 
 
@@ -65,18 +64,17 @@ public class AddSymptoms{
 
     	SQLExec db = new SQLExec();
     	db.connect();
-        ResultSet rs = db.execQuery(query);
-
-        try {
-            while(rs.next()) {
-            	++i;
-            	System.out.println(Integer.toString(i) + ". " + rs.getString("type"));
-                scales.add(rs.getInt("s_id"));
-            }
-        }
-
-        catch (Exception e) {
-            System.out.println("Unable to fetch records");
+        ResultSet rs = null;
+    	try{
+			rs = db.execQuery(query);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to fetch records: "+e);
+		}
+    	while(rs.next()) {
+    		i++;
+    		System.out.println(Integer.toString(i) + ". " + rs.getString("type"));
+    		scales.add(rs.getInt("s_id"));
         }
 
         do{
@@ -164,20 +162,18 @@ public class AddSymptoms{
 
     	SQLExec db = new SQLExec();
     	db.connect();
-        ResultSet rs = db.execQuery(query);
+    	ResultSet rs = null;
+    	try{
+			rs = db.execQuery(query);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to fetch Data from DB: " + e);
+		}
+    	while(rs.next()) {
 
-        try {
-
-            while(rs.next()) {
-
-  				symCode = rs.getString("code");
+    		symCode = rs.getString("code");
   				
-			}
-        }
-
-        catch (Exception e) {
-            System.out.println("Unable to fetch max symptom: " + e);
-        }
+    	}
 
     	if(choice == 1){
     		int temp = Integer.parseInt(symCode.substring(3, 6)) + 1;
@@ -193,8 +189,6 @@ public class AddSymptoms{
 
     public static void main(String[] args) throws Exception
     {
-        AddSymptoms as = new AddSymptoms();
-        as.MainView();
-        System.out.println("Back to Staff menu");
+
     }
 }
