@@ -42,6 +42,8 @@ public class PatientCheckIn{
         }
         listofsymptoms.add(temp);
         do{
+            db.terminate();
+            db.connect();
             System.out.println();
             try {
                 rs = db.execQuery(query);
