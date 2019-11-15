@@ -60,7 +60,7 @@ public class CreateTables {
 		String userWindows = System.getenv("HMSPATH");
 		FileReader pathSchema = new FileReader(userWindows + "sql/createSchema.sql");
 		CreateTables CT = new CreateTables();
-		this.ClearDB();
+		//this.ClearDB();
 		this.CreateTables(pathSchema);
 		FileReader pathData = new FileReader(userWindows + "sql/staffDataPopulated.sql");
 		this.CreateTables(pathData);

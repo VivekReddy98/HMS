@@ -39,7 +39,15 @@ public class AddSeverity {
 		//System.out.println(output);
 		SQLExec db = new SQLExec();
 		db.connect();
-		ResultSet rs = db.execQuery("SELECT MAX(s_id) FROM Severity");
+		ResultSet rs;
+		try{
+			rs = db.execQuery("SELECT MAX(s_id) FROM Severity");
+		}
+		catch (Exception e){
+			System.out.println("Error fetching data from DB: "+e);
+			return;
+		}
+
 		if (rs.next())
 		{
 			id = rs.getInt("MAX(s_id)");
@@ -47,7 +55,14 @@ public class AddSeverity {
 		//System.out.println(id);
 		String query = MessageFormat.format("INSERT INTO Severity VALUES ({0}, ''{1}'')", id+1, output);
 		//System.out.println(query);
-		db.execCommand(query);
+		try{
+			db.execCommand(query);
+		}
+		catch(Exception e){
+			System.out.println("Error inserting data into the DB: "+e);
+			return;
+		}
+
 		db.terminate();
 	}
 
@@ -81,7 +96,7 @@ public class AddSeverity {
 		        	System.out.println("Invalid Choice, Plese Re-enter");
 		        }
 	    
-	        };
+	        }
 	    System.out.println("Exiting back!!");
 	}
 

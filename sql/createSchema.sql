@@ -191,7 +191,7 @@ CREATE TABLE Affected_Info (
 
 CREATE TABLE Reasons (
 		r_id INT,
-		description VARCHAR2(30),
+		description VARCHAR2(100),
 		PRIMARY KEY (r_id)
 );
 
@@ -205,10 +205,13 @@ CREATE TABLE Referred_to(
 		FOREIGN KEY (e_id) REFERENCES Medical_Staff(e_id) ON DELETE SET NULL
 );
 
-CREATE TABLE Referral_Reason(
-		r_id INT,
+CREATE TABLE Referral_Reason (
 		v_id INT,
-		PRIMARY KEY (v_id, r_id),
+		r_id INT,
+		s_code VARCHAR2(20),
+		description VARCHAR2(200),
+		PRIMARY KEY (v_id, r_id, s_code, description),
+		FOREIGN KEY (s_code) REFERENCES Services(code) ON DELETE SET NULL,
 		FOREIGN KEY (v_id) REFERENCES Checks_In(v_id) ON DELETE CASCADE,
 		FOREIGN KEY (r_id) REFERENCES Reasons(r_id) ON DELETE CASCADE
 );

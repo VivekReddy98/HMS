@@ -8,7 +8,7 @@ public class HMS {
         do {
             System.out.println("\n\t\tMain Menu");
             System.out.println("1. Patient");
-            System.out.println("2. Staff");
+            System.out.println("2. Medical Staff");
             System.out.println("3. Exit");
             do {
                 System.out.print("Choose Role(1-3): ");
@@ -20,11 +20,12 @@ public class HMS {
             } while (choice < 1 || choice > 3);
             switch (choice) {
                 case 1:
-                    PatientHome ob = new PatientHome();
-                    ob.MainView();
+                    PatientHome ph = new PatientHome();
+                    ph.MainView();
                     break;
                 case 2:
-                    //Staff Home
+                    StaffHome sh = new StaffHome();
+                    sh.MainView();
                     break;
                 case 3:
                     System.out.println("\tArrivederci!");
