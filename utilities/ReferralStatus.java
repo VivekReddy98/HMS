@@ -20,7 +20,7 @@ public class ReferralStatus{
 
         do{
 
-            System.out.println("\n\t\tStaff Patient Report");
+            System.out.println("\n\t\tReferral Reason");
             System.out.println("Selected Patient: "+vid);
             System.out.println("\n1. Facility id");
             System.out.println("2. Referrer id");
