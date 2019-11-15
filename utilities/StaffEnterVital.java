@@ -7,9 +7,10 @@ import java.io.*;
 import utilities.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class StaffEnterVital{
-    int v_id = 1;
+    int v_id;
     private int temperature;
     private int bp_systolic;
     private int bp_diastolic;
@@ -18,8 +19,8 @@ public class StaffEnterVital{
     }
 
     public void enterDetails(){
-        System.out.println("Enter Following Details for Patient with ID: "+v_id);
-        System.out.print("\nA. Temperature: ");
+        System.out.println("\nEnter Following Details for Patient with ID: "+v_id);
+        System.out.print("A. Temperature: ");
         temperature = StaticFunctions.nextInt();
         System.out.print("B. Systolic blood pressure: ");
         bp_systolic = StaticFunctions.nextInt();
@@ -29,17 +30,18 @@ public class StaffEnterVital{
 
     public void showMenu(){
         do{
-            System.out.println("\n1. Record");
+            System.out.println("\n\t\tActions");
+            System.out.println("1. Record");
             System.out.println("2. Go Back");
             System.out.print("\nEnter Choice: ");
             int choice = StaticFunctions.nextInt();
             if (choice == 1){
                 assessment();
-                System.out.println("\nSuccessfully Recorded! \nGoing Back");
-                choice = 2;
+                System.out.println("\nSuccessfully Recorded! Redirecting to Staff Menu.");
+                TimeUnit.SECONDS.sleep(2);
+                return;
             }
             if (choice == 2){
-                System.out.println("Remaining - Trigger GoBack Func");
                 return;
             }
             if (choice != 1 && choice != 2){
@@ -55,7 +57,6 @@ public class StaffEnterVital{
 
     public void assessment(){
         SQLExec db = new SQLExec();
-        String userWindows = System.getenv("HMSPATH");
         db.connect();
         String priority;
         ///////////////////////////////////////////
@@ -75,7 +76,8 @@ public class StaffEnterVital{
         try {
             db.execCommand(update_Checks_In);
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println("Error updating the database: "+e);
+            return;
         }
 
     }
