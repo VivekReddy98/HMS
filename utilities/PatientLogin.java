@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Login{
+public class PatientLogin{
     private int pid;
     private String f_name;
     private String l_name, dob, city;
-    public Login() {
+    public PatientLogin() {
 
     }
 
@@ -102,7 +102,6 @@ public class Login{
 
     public static void main(String[] args) throws Exception
     {
-        Login ob = new Login();
-        ob.MainView();
+
     }
 }
