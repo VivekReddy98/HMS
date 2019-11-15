@@ -25,6 +25,7 @@ public class AddRule {
     public String b_code;
     public String type;
     public boolean Trigger;
+    public boolean hasSymEntered;
 
     public AddRule() {
         StaticFunctions.Initialise();
@@ -51,7 +52,7 @@ public class AddRule {
 			System.out.println(MessageFormat.format("{0}. {1}", j, listSymptoms.get(j)));
 		}
         System.out.println(MessageFormat.format("{0}. {1}", numSymptoms+1, "Select Priority"));
-		System.out.print(MessageFormat.format("Enter Choice (1 - {0})", numSymptoms));
+		System.out.print(MessageFormat.format("Enter Choice (1 - {0}): ", numSymptoms));
 		int choice_smp = StaticFunctions.nextInt();
 		StaticFunctions.nextLine();
         if (choice_smp < 1 || choice_smp > numSymptoms+1) {
@@ -67,12 +68,13 @@ public class AddRule {
 
     public String takeParts(String s_code) throws SQLException {
     	query = MessageFormat.format("SELECT b_code FROM Symptoms WHERE code=''{0}''", s_code);
-    	System.out.println(query);
+    	//System.out.println(query);
     	db.connect();
     	rs = db.execQuery(query);
         if (rs.next()) {
 			b_code = rs.getString("b_code");
         }
+        
         Hashtable<Integer,String> listParts = new Hashtable<Integer,String>(); 
     	Hashtable<Integer,String> listBCodes = new Hashtable<Integer,String>();
         if(b_code.equals("OTH000")) {
@@ -80,7 +82,8 @@ public class AddRule {
         else {
         	query = MessageFormat.format("SELECT code, name FROM Body_Parts WHERE code = ''{0}''", b_code); 
         } 
-        System.out.println(query);
+        //System.out.println(query);
+
         rs = db.execQuery(query);
     	int i = 1;
     	while(rs.next()) {
@@ -90,25 +93,25 @@ public class AddRule {
                 i = i + 1;
             }
         }
+        db.terminate();
         numParts = i-1;
     	System.out.println("\n\t\t Body Parts");
 		for (i = 1; i<=numParts; i++){
-			System.out.println(MessageFormat.format("{0}. {1})", i, listParts.get(i)));
+			System.out.println(MessageFormat.format("{0}. {1}", i, listParts.get(i)));
 		}
-		System.out.print(MessageFormat.format("Enter your Choice (1 - {0})", numParts));
+		System.out.print(MessageFormat.format("Enter your Choice (1 - {0}): ", numParts));
 		int choice_prt = StaticFunctions.nextInt();
 		StaticFunctions.nextLine();
         if (choice_prt < 1 || choice_prt > numParts) {
             System.out.println("Invalid Selection !!!! ");
             takeParts(s_code);
         } 
-        db.terminate();
 		return listBCodes.get(choice_prt);
     }
 
     public RuleDS takeSeverity(String s_code, RuleDS rule) throws SQLException {
         query = MessageFormat.format("SELECT Severity.s_id, Severity.type FROM Severity, Symptoms WHERE Severity.s_id=Symptoms.severity_type AND Symptoms.code=''{0}''", s_code);
-        System.out.println(query);
+        //System.out.println(query);
         db.connect();
         int s_id;
         rs = db.execQuery(query);
@@ -116,14 +119,19 @@ public class AddRule {
             s_id = rs.getInt("s_id");
             type = rs.getString("type");
         }
+        db.terminate();
         String[] levels = type.trim().split(",");
         System.out.println("\n\t\t Severity Value");
         for (int i = 1; i<=levels.length; i++){
-            System.out.println(MessageFormat.format("{0}. {1})", i, levels[i-1]));
+            System.out.println(MessageFormat.format("{0}. {1}", i, levels[i-1]));
         }
-        System.out.print(MessageFormat.format("Enter your Choice (1 - {0})", levels.length));
+        System.out.print(MessageFormat.format("Enter your Choice (1 - {0}): ", levels.length));
         int choice_sev_value = StaticFunctions.nextInt();
         StaticFunctions.nextLine();
+        if (choice_sev_value < 1 || choice_sev_value > levels.length) {
+            System.out.println("Invalid Choice !!!!, Please Re-enter");
+            return takeSeverity(s_code, rule);
+        }
         rule.s_scale.add(levels[choice_sev_value-1]);
     
         try {
@@ -161,13 +169,15 @@ public class AddRule {
             output = "=";
         } 
         rule.comp.add(output);
+        db.terminate();
         return rule;
     }
 
     public boolean createRule() throws Exception {
 		String choice_smp = takeSymptoms();
         if (!Trigger)
-        {
+        {   
+            hasSymEntered = true; 
             rule.s_code.add(choice_smp);
             String choice_bp = takeParts(choice_smp);   
             rule.b_code.add(choice_bp);
@@ -177,6 +187,11 @@ public class AddRule {
 		else {
             boolean enter = true;
             while (enter) {
+                if (!hasSymEntered)
+                {
+                    System.out.println("First enter a symptom and its characteristics, and then the priority");
+                    return true;
+                }
                 System.out.println("\n\t\t Select the Proirity");
                 System.out.println("1. High ");
                 System.out.println("2. Normal ");
@@ -184,15 +199,15 @@ public class AddRule {
                 System.out.print("Enter Choice (1 - 3)");
                 int pri = StaticFunctions.nextInt();
                 if (pri == 1) {
-                    rule.priority = "High";
+                    rule.priority = "HIGH";
                     enter = false;
                 }
                 else if (pri == 2) {
-                    rule.priority = "Normal";
+                    rule.priority = "NORMAL";
                     enter = false;
                 }
                 else if (pri == 3) {
-                    rule.priority = "Low";
+                    rule.priority = "QUARANTINE";
                     enter = false;
                 }
                 else{
@@ -201,7 +216,31 @@ public class AddRule {
             }
             return false;
         }
+    }
 
+    public void insertData() throws Exception {
+        SQLExec db = new SQLExec();
+        db.connect();
+        String cmd = MessageFormat.format("INSERT INTO Rule_Priority (priority) VALUES (''{0}'')", rule.priority);
+        //System.out.println(cmd);
+        
+        db.execCommand(cmd);
+
+        // Get the asn_id
+        cmd = "SELECT MAX(asn_id) FROM Rule_Priority";
+
+        rs = db.execQuery(cmd);
+        int asn_id = 0;
+        if(rs.next()) {
+            asn_id = rs.getInt("MAX(asn_id)");
+        }
+
+        String query = "INSERT INTO Assessment_Rules VALUES ({0}, ''{1}'', ''{2}'', ''{3}'', ''{4}'')";
+        for (int j=0; j<rule.s_code.size(); j++){
+            //System.out.println(MessageFormat.format(query, asn_id, rule.s_code.get(j), rule.b_code.get(j), rule.comp.get(j), rule.s_scale.get(j)));
+            db.execCommand(MessageFormat.format(query, asn_id, rule.s_code.get(j), rule.b_code.get(j), rule.comp.get(j), rule.s_scale.get(j)));               
+        }
+        db.terminate();
     }
 
 	public void MainView() throws Exception {
@@ -209,34 +248,17 @@ public class AddRule {
 		boolean dont_terminate = true;
 		Rules = new ArrayList<RuleDS>();
 		System.out.println("\n\t\t Menu to add a New Assessment Rules ");
-		// System.out.println("1. Add a New Rule");
-		// System.out.println("2. Go Back");
 
 		while (dont_terminate) {
                dont_terminate = createRule();
-
-			// System.out.println("Enter Choice (1-2): ");
-			// choice = StaticFunctions.nextInt();
-   //          StaticFunctions.nextLine();
-			// if (choice == 1) {
-			// 	int a = createRule();
-		 //    }
-	  //       else if (choice == 2) {
-	  //       	dont_terminate = false;
-	  //       }
-	  //       else{
-	  //       	System.out.println("Invalid Choice, Plese Re-enter");
-	  //       }
+        
 	    }
-        
-        for (int j=0; j<rule.s_code.size(); j++){
-            System.out.println(rule.s_code.get(j)+"|"+rule.b_code.get(j)+"|"+rule.s_scale.get(j)+"|"+rule.comp.get(j));               
-        }
         System.out.println(rule.priority);
+        insertData();
 
-        
-	}
- 	public static void main(String[] args) throws Exception {
+    }
+
+	public static void main(String[] args) throws Exception {
         AddRule AR = new AddRule();
         AR.MainView();
     }
