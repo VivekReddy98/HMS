@@ -208,7 +208,7 @@ CREATE TABLE Referred_to(
 CREATE TABLE Referral_Reason (
 		v_id INT,
 		r_id INT,
-		s_code VARCHAR2(20),
+		s_code VARCHAR2(50),
 		description VARCHAR2(200),
 		PRIMARY KEY (v_id, r_id, s_code, description),
 		FOREIGN KEY (s_code) REFERENCES Services(code) ON DELETE SET NULL,
