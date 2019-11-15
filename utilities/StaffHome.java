@@ -96,14 +96,17 @@ public class StaffHome{
                     spp.MainView();
                     break;
                 case 2:
-                    System.out.print("Treated patients' list");
+                    TreatedPatient tp = new TreatedPatient();
+                    tp.MainView(eid);
                     System.out.print("Staff checkout patient page");
                     break;
                 case 3:
-                    System.out.print("Add symptoms page");
+                    AddSymptoms as = new AddSymptoms();
+                    as.MainView();
                     break;
                 case 4:
-                    System.out.print("Add severity scale");
+                    AddSeverity asev = new AddSeverity();
+                    asev.MainView();
                     break;
                 case 5:
                     System.out.print("Add assessment rule");

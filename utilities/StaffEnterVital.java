@@ -15,7 +15,7 @@ public class StaffEnterVital{
     private int bp_systolic;
     private int bp_diastolic;
     public StaffEnterVital() {
-        StaticFunctions.Initialise();
+
     }
 
     public void enterDetails(){
@@ -28,7 +28,7 @@ public class StaffEnterVital{
         bp_diastolic = StaticFunctions.nextInt();
     }
 
-    public void showMenu(){
+    public void showMenu()throws Exception{
         do{
             System.out.println("\n\t\tActions");
             System.out.println("1. Record");
@@ -84,7 +84,5 @@ public class StaffEnterVital{
 
     public static void main(String[] args) throws Exception
     {
-        StaffEnterVital ob = new StaffEnterVital();
-        ob.mainView();
     }
 }
