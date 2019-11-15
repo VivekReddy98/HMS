@@ -63,6 +63,7 @@ INSERT INTO Equipments VALUES ('Vision Screener');
 INSERT INTO Services VALUES ('SER01', 'Emergency');
 INSERT INTO Services VALUES ('SGP01', 'General Practice');
 INSERT INTO Services VALUES ('VIS01', 'Vision');
+INSERT INTO Services VALUES ('OTH00', 'Other');
 
 INSERT INTO Dept_Provides_Service VALUES ('ER000', 'SER01');
 INSERT INTO Dept_Provides_Service VALUES ('GP000', 'SGP01');
@@ -96,3 +97,7 @@ INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, cou
 INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('Rock','Star', TO_DATE('08/31/1970', 'MM/DD/YYYY'), '5403127893', '1022', 'Amphitheatre Parkway', 'Mountain View','California', 'US');
 
 INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, country) VALUES ('Sheldon','Cooper', TO_DATE('05/26/1984', 'MM/DD/YYYY'), '6184628437', '1210', 'Sacramento', 'Santa Cruz', 'California', 'US');
+
+INSERT INTO Reasons VALUES (1, 'Service unavailable at the time of Visit');
+INSERT INTO Reasons VALUES (2, 'Service not present at the facility');
+INSERT INTO Reasons VALUES (3, 'Non-Payment');
