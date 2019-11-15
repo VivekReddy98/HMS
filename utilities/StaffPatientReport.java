@@ -46,6 +46,9 @@ public class StaffPatientReport{
                     break;
                 case 2:
                     System.out.print("Referral Status page");
+                    ReferralStatus rst = new ReferralStatus();
+                    rst.MainView(r_obj);
+                    System.out.println("Test:\t" + r_obj.Q_Ref_to);
                     break;
                 case 3:
 

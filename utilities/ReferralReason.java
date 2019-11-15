@@ -19,6 +19,7 @@ public class ReferralReason {
     public int count_records = 0;
     public ArrayList<String> choices;
     public ResultSet rs;
+    public int t = 0;
 
     public ReferralReason() throws Exception {
         StaticFunctions.Initialise();
@@ -43,19 +44,28 @@ public class ReferralReason {
     }
 
     public String getService() throws Exception {
-        System.out.println("\n\t\tMenu to enter the code for a Service");
+        String service;
+        
 
         Set<Entry<String, String>> entrySet = hashService.entrySet();
-
-        for(Entry<String, String> entry1 : entrySet) {
-            System.out.println("Code: " + entry1.getKey() + " -> Name: " + entry1.getValue());
-        }
-
+        if(!(t == 0)){
+            System.out.println("\n\t\tMenu to enter the code for a Service");
+            for(Entry<String, String> entry1 : entrySet) {
+                System.out.println("Code: " + entry1.getKey() + " -> Name: " + entry1.getValue());
+            }
         System.out.println("Enter Your Choice: ");
+        }
+        
+        
 
-        String service = StaticFunctions.nextLine();
+        service = StaticFunctions.nextLine();
+    
         if (!hashService.containsKey(service)){
-            System.out.println(" Invalied Entry!!!, Enter the code exactly as shown above");
+            if(!(t == 0)){
+                System.out.println(" Invalied Entry!!!, Enter the code exactly as shown above");
+            }
+            t += 1;
+            
             return getService();
         }
         return service;
@@ -110,7 +120,7 @@ public class ReferralReason {
 
                 r_obj.Referral_Reasons.add(choices);
 
-                query = MessageFormat.format("INSERT INTO Referral_Reason VALUES ({0}, {1}, ''{2}'', ''{3}'')", r_obj.v_id, reason, service, description);
+                query = MessageFormat.format("INSERT INTO Referral_Reason VALUES ({0}, {1}, ''{2}'', ''{3}'')", r_obj.vid, reason, service, description);
                 r_obj.Q_Ref_Reasons.add(query);
 
             } else if (choice == 2) {
@@ -128,7 +138,7 @@ public class ReferralReason {
     {
         ReferralReason spr = new ReferralReason();
         ReportDS r_ob = new ReportDS();
-        r_ob.v_id = 1;
+        r_ob.vid = 1;
         spr.MainView(r_ob);
         int i;
         for(i=0; i<r_ob.Q_Ref_Reasons.size(); i++) {

@@ -10,7 +10,7 @@ public class ReportDS {
 	public String discharge_status = new String();
 	public String trmt_description = new String();
 	public int f_id = 0 ;
-	public int v_id = 0;
+	public int vid = 0;
 	public String e_id = new String();
 	public ArrayList<ArrayList< String>> Referral_Reasons = new ArrayList<ArrayList< String>>();
 	public int n_code = 0;

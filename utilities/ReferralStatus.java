@@ -70,6 +70,13 @@ public class ReferralStatus{
                     break;
                 case 3:
                     System.out.println("Remaining - Goto referral reasons page");
+                    //Testing------------------------
+                    ReferralReason spr = new ReferralReason();
+                    spr.MainView(r_obj);
+                    int i;
+                    for(i=0; i<r_obj.Q_Ref_Reasons.size(); i++) {
+                        System.out.println(r_obj.Q_Ref_Reasons.get(i));
+                    }
                     return;
 
                 case 4:
