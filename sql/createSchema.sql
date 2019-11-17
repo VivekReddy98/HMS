@@ -121,7 +121,7 @@ CREATE TABLE Performed_using (
 );
 
 CREATE TABLE Patient (
-		p_id INT,
+		p_id INT AUTO_INCREMENT,
 		fname VARCHAR(30),
 		lname VARCHAR(30),
 		dob DATE,
@@ -136,7 +136,7 @@ CREATE TABLE Patient (
 );
 
 CREATE TABLE Checks_In (
-		v_id INT,
+		v_id INT AUTO_INCREMENT,
 		p_id INT,
 		f_id INT,
 		temp INT,
@@ -217,13 +217,13 @@ CREATE TABLE Referral_Reason (
 );
 
 CREATE TABLE Rule_Priority ( 
-		asn_id INT,
+		asn_id INT AUTO_INCREMENT,
 		priority VARCHAR(50) CHECK( priority IN ('HIGH', 'NORMAL', 'QUARANTINE')),
 		PRIMARY KEY (asn_id)
 );
 
 CREATE TABLE Assessment_Rules ( 
-		ar_id INT,
+		ar_id INT ,
 		s_code VARCHAR(10),
 		b_code VARCHAR(20),
 		comparison VARCHAR(2) CHECK( comparison IN ('>', '=', '<', '>=', '<=', '!=')),
