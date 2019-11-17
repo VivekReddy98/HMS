@@ -70,7 +70,8 @@ public class StaffEnterVital{
         Date date = new Date();
         String current_time;
         current_time = formatter.format(date);
-        current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
+        // current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
+        current_time = "STR_TO_DATE('"+current_time+"', '%m/%d/%Y %T')";
 
         String update_Checks_In = "UPDATE Checks_In SET checkin_end_time = " +current_time+", temp = "+ temperature+", bp_systolic = "+bp_systolic+", bp_diastolic = "+bp_diastolic+", priority = '"+priority+"' WHERE v_id ="+v_id+"";
         try {
