@@ -92,8 +92,10 @@ public class PatientCheckIn{
             Date date = new Date();
             String current_time;
             current_time = formatter.format(date);
-            current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
+            //current_time = "TO_DATE('"+current_time+"', 'mm/dd/yyyy hh24:mi:ss')";
+            current_time = "STR_TO_DATE('"+current_time+"', '%m/%d/%Y %T')";
             String update_start_time_query = "UPDATE Checks_In SET checkin_start_time = " +current_time+" WHERE v_id ="+v_id+"";
+            System.out.println(update_start_time_query);
 //            System.out.println(update_start_time_query);
             try{
                 db.execCommand(update_start_time_query);
@@ -135,6 +137,7 @@ public class PatientCheckIn{
 
     public static void main(String[] args) throws Exception
     {
-
+        // PatientCheckIn pc = new PatientCheckIn();
+        // pc.MainView(1);
     }
 }
