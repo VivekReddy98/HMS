@@ -21,6 +21,8 @@ INSERT INTO Symptoms VALUES ('SYM005', 'HED000', 'Lightheadedness', 2);
 INSERT INTO Symptoms VALUES ('SYM006', 'EYE000', 'Blurred vision', 2);
 INSERT INTO Symptoms VALUES ('SYM007', 'OTH000', 'Bleeding', 5);
 INSERT INTO Symptoms VALUES ('SYM000', 'OTH000', 'Other', 5);
+INSERT INTO Symptoms VALUES ('SYM008', 'HRT000', 'Break Up', 1);
+
 
 INSERT INTO Medical_Facility (f_id, name, capacity, classification, numb, street, city, state, country) VALUES (1000, 'Wolf Hospital', 300, '03', 2650, 'Wolf Village Way Box 7220', 'Raleigh', 'NC 27695', 'USA');
 INSERT INTO Medical_Facility (f_id, name, capacity, classification, numb, street, city, state, country) VALUES (1001, 'California Health Care', 150, '02', 2500, 'Sacramento Santa', 'Santa Cruz', 'CA 90021', 'USA');
@@ -101,3 +103,18 @@ INSERT INTO Patient (fname, lname, dob, phone_no, numb, street, city, state, cou
 INSERT INTO Reasons VALUES (1, 'Service unavailable at the time of Visit');
 INSERT INTO Reasons VALUES (2, 'Service not present at the facility');
 INSERT INTO Reasons VALUES (3, 'Non-Payment');
+
+
+INSERT INTO Checks_In VALUES (1, 1, 1000, 98, 98, 98, STR_TO_DATE('01/01/2019', '%m/%d/%Y'), STR_TO_DATE('01/05/2019', '%m/%d/%Y'), STR_TO_DATE('01/10/2019', '%m/%d/%Y'), STR_TO_DATE('01/20/2019', '%m/%d/%Y'), 'High', 'Referred', 'true', 'fvvwebvv', 'flnbkbkbu', 1, 'yes', 'Fsvdabvdjsnbjkdsb dskj'); 
+INSERT INTO Checks_In VALUES (2, 2, 1000, 98, 98, 98, STR_TO_DATE('01/01/2019', '%m/%d/%Y'), STR_TO_DATE('01/05/2019', '%m/%d/%Y'), STR_TO_DATE('01/10/2019', '%m/%d/%Y'), STR_TO_DATE('01/20/2019', '%m/%d/%Y'), 'Normal', 'Referred', 'true', 'fvvwebvv', 'flnbkbkbu', 2, 'yes', 'Fsvdabvdjsnbjkdsb dskj');
+INSERT INTO Checks_In VALUES (3, 4, 1000, 98, 98, 98, STR_TO_DATE('01/01/2019', '%m/%d/%Y'), STR_TO_DATE('01/05/2019', '%m/%d/%Y'), STR_TO_DATE('01/10/2019', '%m/%d/%Y'), STR_TO_DATE('01/20/2019', '%m/%d/%Y'), 'Normal', 'Referred', 'true', 'fvvwebvv', 'flnbkbkbu', 2, 'yes', 'Fsvdabvdjsnbjkdsb dskj');
+INSERT INTO Checks_In VALUES (4, 3, 1001, 98, 98, 98, STR_TO_DATE('01/01/2019', '%m/%d/%Y'), STR_TO_DATE('01/05/2019', '%m/%d/%Y'), STR_TO_DATE('01/10/2019', '%m/%d/%Y'), STR_TO_DATE('01/20/2019', '%m/%d/%Y'), 'Quarantine', 'Referred', 'true', 'fvvwebvv', 'flnbkbkbu', 0, 'yes', 'Fsvdabvdjsnbjkdsb dskj');
+INSERT INTO Checks_In VALUES (5, 4, 1001, 98, 98, 98, STR_TO_DATE('01/01/2019', '%m/%d/%Y'), STR_TO_DATE('01/05/2019', '%m/%d/%Y'), STR_TO_DATE('01/10/2019', '%m/%d/%Y'), STR_TO_DATE('01/20/2019', '%m/%d/%Y'), 'Normal', 'Treated Successfully', 'true', 'fvvwebvv', 'flnbkbkbu', 1, 'yes', 'Fsvdabvdjsnbjkdsb dskj');
+
+INSERT INTO Affected_Info VALUES (4, 'SYM008', 'HRT000', '3456.346098376', 'true', 'gagaghaga', 'agasgsagha', '8');
+INSERT INTO Affected_Info VALUES (2, 'SYM007', 'CST000', '3456.346098376', 'true', 'gagaghaga', 'agasgsagha', 'Heavy');
+
+INSERT INTO Referred_to VALUES (1002, 1, '89001');
+INSERT INTO Referred_to VALUES (1002, 2, '89001'); 
+INSERT INTO Referred_to VALUES (1000, 4, '89001'); 
+INSERT INTO Referred_to VALUES (1001, 3, '89001');
