@@ -70,10 +70,11 @@ public class Signup{
         }
         db.terminate();
     }
-    public void newPatient() throws Exception{
+    public void MainView() throws Exception{
         String f_name, l_name, dob, street, city, state, country, phone_no;
         int addr_num;
         boolean invalidDate;
+        int choice;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         dateFormat.setLenient(false);
@@ -112,10 +113,6 @@ public class Signup{
         System.out.print("Enter Phone No: ");
         phone_no = StaticFunctions.nextLine();
 
-        addPatient(f_name, l_name, addr_num, street, city, state, country, dob, phone_no);
-    }
-    public void MainView() throws Exception{
-        int choice;
 
         System.out.println("\n\t\tSign Up");
         System.out.println("1. Sign Up");
@@ -131,12 +128,16 @@ public class Signup{
         }while(choice != 1 && choice != 2);
         switch(choice) {
             case 1:
-                newPatient();
-                break;
-            case 2:
+                addPatient(f_name, l_name, addr_num, street, city, state, country, dob, phone_no);
                 return;
-        };
+            case 2:
+            	System.out.println("Discarding changes..");
+                return;
+        }
+
+        
     }
+    
 
     public static void main(String[] args) throws Exception
     {
