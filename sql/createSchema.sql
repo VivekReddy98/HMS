@@ -153,6 +153,7 @@ CREATE TABLE Checks_In (
 		neg_exp VARCHAR(30),
 		neg_code INT DEFAULT 0 CHECK( neg_code IN (0, 1, 2)),
 		acknowledged VARCHAR(30) CHECK( acknowledged IN ('yes', 'no')),
+		ack_reason VARCHAR(100) DEFAULT NULL,
 		PRIMARY KEY (v_id),
 		FOREIGN KEY (f_id) REFERENCES Medical_Facility(f_id) ON DELETE SET NULL,
 		FOREIGN KEY (p_id) REFERENCES Patient(p_id) ON DELETE SET NULL
