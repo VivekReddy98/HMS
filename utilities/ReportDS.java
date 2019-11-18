@@ -20,6 +20,6 @@ public class ReportDS {
 	public String Q_Ref_to = new String();
 	public String Q_trmt = new String();
 	public String Q_discharge = new String();
-	public String Q_negex = new String();
+	public String Q_negex = "Nothing";
 
 }

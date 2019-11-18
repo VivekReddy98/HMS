@@ -32,30 +32,45 @@ public class SQLExec extends ConnectDB{
     }
 
     public void execTransaction(ReportDS ds) throws SQLException {
-      con.setAutoCommit(false);
+      
+      // System.out.println(ds.Q_trmt);
+      // System.out.println(ds.Q_discharge);
+      // System.out.println(ds.discharge_status);
+      // System.out.println(ds.Q_negex);
+
+      super.conn.setAutoCommit(false);
       try {
-        db.execCommand(ds.Q_trmt);
-        db.execCommand(ds.Q_discharge);
-        db.execCommand(ds.Q_negex);
-        db.execCommand(ds.Q_Ref_to);
-        int i;
-        for(i=0; i<ds.Q_Ref_Reasons.size(); i++) {
-            db.execCommand(ds.Q_Ref_Reasons.get(i));
+        this.execCommand(ds.Q_trmt);
+        this.execCommand(ds.Q_discharge);
+        if (ds.discharge_status.equals("Referred")) {
+
+      
+            this.execCommand(ds.Q_Ref_to);
+            int i;
+            for(i=0; i<ds.Q_Ref_Reasons.size(); i++) {
+              this.execCommand(ds.Q_Ref_Reasons.get(i));
+            }
         }
-        con.commit();
-      } catch (Exception e)
+
+        if (!ds.Q_negex.equals("Nothing")) {         
+          this.execCommand(ds.Q_negex);
+        }
+        super.conn.commit();
+      } catch (Exception f)
       {
         try {
-          con.rollback();
-          System.out.println("FUcked Up!!!!!!!!!!!!!!");
-        } catch (Exception e)
+          super.conn.rollback();
+          System.out.println(f);
+        } 
+        catch (Exception e)
         {
-          System.out.println("FUcked Up Again!!!!!!!!!!!!!!" + e);
-          
+          System.out.println("Fucked Up Again!!!!!!!!!!!!!!" + e);
         }
-      con.setAutoCommit(true);
       }
+      super.conn.setAutoCommit(true);
+      return;
       }
+
 }
 
 

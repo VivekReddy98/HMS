@@ -15,17 +15,6 @@ public class StaffPatientReport{
         StaticFunctions.Initialise();
     }
 
-    public void fireQueries(){
-        //System.out.println("Queries Fired!!");
-        SQLExec db = new SQLExec();
-        db.connect();
-
-        
-
-
-
-
-    }
 
     public void MainView(int vid) throws Exception{
     	String trmt_desc = "";
@@ -118,7 +107,7 @@ public class StaffPatientReport{
                         ch = StaticFunctions.nextInt();
                         StaticFunctions.nextLine();
                         if(ch == 1){
-                            fireQueries();
+                            db.execTransaction(r_obj);
                             return;
                         }
                         else if(ch == 2){
@@ -136,6 +125,8 @@ public class StaffPatientReport{
             };
         }while(choice != 5);
 
+
+        db.terminate();
         return;
     }
 
