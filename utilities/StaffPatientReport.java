@@ -37,22 +37,21 @@ public class StaffPatientReport{
             StaticFunctions.nextLine();
             switch(choice) {
                 case 1:
-                    System.out.print("Discharge Status page");
-                    //Testing------------------------
+                    //System.out.print("Discharge Status page");
+
                     DischargeStatus spr = new DischargeStatus();
                     spr.MainView(r_obj);
-                    System.out.println("Test:\t" + r_obj.Q_discharge);
-                    //----------------------------------
+                    //System.out.println("Test:\t" + r_obj.Q_discharge);
                     break;
                 case 2:
-                    System.out.print("Referral Status page");
+                   // System.out.print("Referral Status page");
                     ReferralStatus rst = new ReferralStatus();
                     rst.MainView(r_obj);
-                    System.out.println("Test:\t" + r_obj.Q_Ref_to);
+                    //System.out.println("Test:\t" + r_obj.Q_Ref_to);
                     break;
                 case 3:
 
-                    System.out.print("Enter treatment description:");
+                    System.out.println("Enter treatment description:");
                     trmt_desc = StaticFunctions.nextLine();
                     String query = "Update Checks_In set trmt_description = '" + trmt_desc + "' where v_id = " + vid;
 			        // try{
@@ -70,7 +69,10 @@ public class StaffPatientReport{
                     break;
                     
                 case 4:
-                    System.out.print("Negative Experience page");
+                   // System.out.print("Negative Experience page");
+
+                    NegativeExperience ne = new NegativeExperience();
+                    ne.MainView(r_obj);
                     break;
                 case 5:
                     return;
@@ -103,7 +105,7 @@ public class StaffPatientReport{
 
     public static void main(String[] args) throws Exception
     {
-        StaffPatientReport spr = new StaffPatientReport();
-        spr.MainView(1);
+        // StaffPatientReport spr = new StaffPatientReport();
+        // spr.MainView(1);
     }
 }

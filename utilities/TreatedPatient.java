@@ -83,8 +83,11 @@ public class TreatedPatient{
     		}
 
     		else if (choice == 1){
-    			//Call checkout(vid);
+                
     			System.out.println("Call checkout(" + vid + "),  parameter: vid");
+
+                StaffPatientReport spr = new StaffPatientReport();
+                spr.MainView(vid);
     		}
     		else{
     			return;
