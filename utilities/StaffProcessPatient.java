@@ -13,6 +13,7 @@ public class StaffProcessPatient{
     private String staff_id;
     public StaffProcessPatient(String e_id) {
         staff_id = e_id;
+        //StaticFunctions.Initialise();
     }
 
     public void displayPatients() throws Exception{
@@ -81,7 +82,7 @@ public class StaffProcessPatient{
         }
 
         do {
-            System.out.print("\nEnter the ID of patient to select: ");
+            System.out.print("\nEnter your choice: ");
             choice = StaticFunctions.nextInt();
             StaticFunctions.nextLine();
             
@@ -110,12 +111,14 @@ public class StaffProcessPatient{
                 System.out.println("Invalid Choice");
             }
         }while(choice_opt != 1 && choice_opt != 2 && choice_opt !=3);
+
+        //System.out.println(listofpatients.get(choice-1).getClass());
         switch(choice_opt) {
             case 1:
-                executeChoice_opt(choice, choice_opt);
+                executeChoice_opt((int)listofpatients.get(choice-1), choice_opt);
                 break;
             case 2:
-                executeChoice_opt(choice, choice_opt);
+                executeChoice_opt((int)listofpatients.get(choice-1), choice_opt);
                 break;
             case 3:
                 return;
@@ -203,6 +206,7 @@ public class StaffProcessPatient{
 
     public static void main(String[] args) throws Exception
     {
-
+        StaffProcessPatient spp = new StaffProcessPatient("88001");
+        spp.MainView();
     }
 }
