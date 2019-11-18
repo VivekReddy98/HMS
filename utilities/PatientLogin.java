@@ -16,8 +16,11 @@ public class PatientLogin{
 
     boolean autheticate() throws Exception{
         ResultSet rs = null;
-        String query = "Select p_id, fname from Patient where lname = '" + l_name + "' and dob = TO_DATE('" +
-                dob +"', 'MM/dd/yyyy') and city = '"+ city +"'";
+        // String query = "Select p_id, fname from Patient where lname = '" + l_name + "' and dob = TO_DATE('" +
+        //         dob +"', 'MM/dd/yyyy') and city = '"+ city +"'";
+
+        String query = "Select p_id, fname from Patient where lname = '" + l_name + "' and dob = STR_TO_DATE('" +
+                dob +"', '%m/%d/%Y') and city = '"+ city +"'";
         SQLExec db = new SQLExec();
         db.connect();
 
