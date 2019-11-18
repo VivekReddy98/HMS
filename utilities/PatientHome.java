@@ -30,7 +30,9 @@ public class PatientHome{
                     ob2.MainView();
                     break;
                 case 3:
-                    System.out.println("Coming Soon!");
+                    //System.out.println("Coming Soon!");
+                    DemoQueries dq = new DemoQueries();
+                    dq.MainView();
                     break;
                 case 4:
                     break;

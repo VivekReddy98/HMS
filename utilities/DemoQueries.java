@@ -74,7 +74,7 @@ public class DemoQueries {
             return;
         }
         else if (choice == 1) {
-            query = "SELECT p.fname, p.lname, c.f_id, c.checkin_end_time, c.discharge_time, c.neg_exp from Patient p, Checks_In c WHERE p.p_id = c.p_id AND c.dis_status IS NOT NULL AND c.neg_exp IS NOT NULL";
+            query = "SELECT p.fname, p.lname, c.f_id, c.checkin_end_time, c.discharge_time, c.neg_exp from Patient p, Checks_In c WHERE p.p_id = c.p_id AND c.dis_status IS NOT NULL AND c.neg_code <> 0";
             demoQuery(query);
             preDefined();
             return;
@@ -113,7 +113,7 @@ public class DemoQueries {
                 Q2();
                 return;
         }
-        query = MessageFormat.format("SELECT DISTINCT f_id FROM Checks_In C WHERE C.discharge_time > ''{0}'' AND C.discharge_time < ''{1}'' AND C.neg_exp=0", start_time, end_time);
+        query = MessageFormat.format("SELECT DISTINCT f_id FROM Checks_In C WHERE C.discharge_time > ''{0}'' AND C.discharge_time < ''{1}'' AND C.neg_code=0", start_time, end_time);
         System.out.println(query);
         demoQuery(query);
         return;
