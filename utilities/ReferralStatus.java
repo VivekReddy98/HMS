@@ -33,7 +33,7 @@ public class ReferralStatus{
             switch(choice) {
                 case 1:
                     int f_id;
-                    System.out.println("Enter Facility ID: ");
+                    System.out.println("Enter Facility ID: \n(Enter zero if no facility)");
                     f_id = StaticFunctions.nextInt();
                     StaticFunctions.nextLine();
                     // query = "INSERT INTO Referred_To (f_id, v_id) VALUES ("+f_id+"," + vid+")";
@@ -96,9 +96,9 @@ public class ReferralStatus{
 
     public static void main(String[] args) throws Exception
     {
-        ReferralStatus spr = new ReferralStatus();
-        ReportDS r_obj = new ReportDS();
-        spr.MainView(r_obj);
-        System.out.println(r_obj.Q_Ref_to);
+        // ReferralStatus spr = new ReferralStatus();
+        // ReportDS r_obj = new ReportDS();
+        // spr.MainView(r_obj);
+        // System.out.println(r_obj.Q_Ref_to);
     }
 }

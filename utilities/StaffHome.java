@@ -101,7 +101,7 @@ public class StaffHome{
                 case 2:
                     TreatedPatient tp = new TreatedPatient();
                     tp.MainView(eid);
-                    System.out.print("Staff checkout patient page");
+                    //System.out.print("Staff checkout patient page");
                     break;
                 case 3:
                     AddSymptoms as = new AddSymptoms();
@@ -112,11 +112,13 @@ public class StaffHome{
                     asev.MainView();
                     break;
                 case 5:
+                   // System.out.print("Add assessment rule");
+
                     AddRule AR = new AddRule();
                     AR.MainView();
                     break;
                 case 6:
-                    //System.out.print("Function for choice 6");
+                    System.out.print("Function for choice 6");
                     break;
             };
         }while(choice != 6);

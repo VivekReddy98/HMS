@@ -15,6 +15,18 @@ public class StaffPatientReport{
         StaticFunctions.Initialise();
     }
 
+    public void fireQueries(){
+        //System.out.println("Queries Fired!!");
+        SQLExec db = new SQLExec();
+        db.connect();
+
+        
+
+
+
+
+    }
+
     public void MainView(int vid) throws Exception{
     	String trmt_desc = "";
         int choice;
@@ -45,8 +57,15 @@ public class StaffPatientReport{
                     break;
                 case 2:
                    // System.out.print("Referral Status page");
-                    ReferralStatus rst = new ReferralStatus();
-                    rst.MainView(r_obj);
+                    if (!(r_obj.discharge_status.equals("Referred"))){
+                        System.out.println("Discharge status needs to be \"referred\" to set referral status!");
+                        break;
+                    }
+                    else{
+                        ReferralStatus rst = new ReferralStatus();
+                        rst.MainView(r_obj);
+                    }
+                    
                     //System.out.println("Test:\t" + r_obj.Q_Ref_to);
                     break;
                 case 3:
@@ -78,20 +97,37 @@ public class StaffPatientReport{
                     return;
                 case 6:
 
-                    System.out.print("\033[H\033[2J");  
-                    System.out.flush();
-
-
-                    System.out.println("-----------------------------------Report--------------------------------");
+                    // System.out.print("\033[H\033[2J");  
+                    // System.out.flush();
+                    int i = 0;
+                    int ch = 0;
+                    System.out.println("------------------------------------------------Report--------------------------------");
                     System.out.println("Discharge Status:\t" + r_obj.discharge_status);
-                    System.out.println("Referral Status:\t");
+                    System.out.println("Referral Status:\n\tFacility Id is: " + r_obj.f_id + "\n\tReferrer Id is: " + r_obj.e_id + "\n\tReasons are:[Reason Code, Service Code, Description]" );
+                    for(i=0; i<r_obj.Q_Ref_Reasons.size(); i++) {
+                         System.out.println(r_obj.Referral_Reasons.get(i));
+                    }
                     System.out.println("Treatment given:\t" + r_obj.trmt_description);
                     System.out.println("Negative Experience Code\t:" + r_obj.n_code);
                     System.out.println("Negative Experience description\t:" + r_obj.n_description);
-                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("--------------------------------------------------------------------------------------");
 
 
-                    System.out.println("Confirm?");
+                    do{
+                        System.out.println("1.Confirm\n2.Go Back\nEnter 1/2:");
+                        ch = StaticFunctions.nextInt();
+                        StaticFunctions.nextLine();
+                        if(ch == 1){
+                            fireQueries();
+                            return;
+                        }
+                        else if(ch == 2){
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid Choice");
+                        }
+                    }while(ch != 1 && ch != 2);
 
                     break;
                 default:
@@ -105,7 +141,7 @@ public class StaffPatientReport{
 
     public static void main(String[] args) throws Exception
     {
-        // StaffPatientReport spr = new StaffPatientReport();
-        // spr.MainView(1);
+         StaffPatientReport spr = new StaffPatientReport();
+         spr.MainView(5);
     }
 }
