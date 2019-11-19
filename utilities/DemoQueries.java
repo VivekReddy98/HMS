@@ -162,7 +162,7 @@ public class DemoQueries {
             	preDefined();
             }
             else if (choice==4) {
-            	StaticFunctions.closeScanner();
+            	//StaticFunctions.closeScanner();
             	break;
             }
             else {

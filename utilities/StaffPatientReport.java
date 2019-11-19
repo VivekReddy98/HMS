@@ -95,7 +95,7 @@ public class StaffPatientReport{
                     if (r_obj.discharge_status.equals("Referred")) {
                     System.out.println("Referral Status:\n\tFacility Id is: " + r_obj.f_id + "\n\tReferrer Id is: " + r_obj.e_id + "\n\tReasons are:[Reason Code,       Service Code,     Description]" );
                     for(i=0; i<r_obj.Q_Ref_Reasons.size(); i++) {
-                        System.out.println("\t")
+                        System.out.println("\t");
                         System.out.print(r_obj.Referral_Reasons.get(i));
                     }   
                     } 
