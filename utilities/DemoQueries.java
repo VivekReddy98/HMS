@@ -22,6 +22,8 @@ public class DemoQueries {
 
     public DemoQueries() throws Exception {
         StaticFunctions.Initialise();
+        query = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))";
+        demoCommand(query);
     }
 
     public void demoQuery(String query) throws Exception {
@@ -74,6 +76,7 @@ public class DemoQueries {
             return;
         }
         else if (choice == 1) {
+
             query = "SELECT p.fname, p.lname, c.f_id, c.checkin_end_time, c.discharge_time, c.neg_exp from Patient p, Checks_In c WHERE p.p_id = c.p_id AND c.dis_status IS NOT NULL AND c.neg_code <> 0";
             demoQuery(query);
             preDefined();
@@ -86,13 +89,22 @@ public class DemoQueries {
             return;
         }
         else if (choice == 5) {
-            query = "SELECT MAX(M.count_val) AS Maximum FROM (SELECT COUNT(neg_code) AS count_val, f_id FROM Checks_In C WHERE C.neg_code<>0 GROUP BY f_id) AS M";
+            query = "SELECT f_id FROM (SELECT COUNT(neg_code) AS count_val, f_id FROM Checks_In C WHERE C.neg_code<>0 GROUP BY f_id) AS F GROUP BY F.count_val ORDER BY F.count_val DESC LIMIT 1";
             demoQuery(query);
             preDefined();
             return; 
         }
         else if (choice == 3) {
             query = "SELECT F.cf AS Parent_Facilty, F.rf AS Referred_Facility, F.max_cf AS Occurences FROM (SELECT cf, rf, count(*) AS max_cf FROM (SELECT C.f_id AS cf, R.f_id as rf  FROM Checks_In C, Referred_to R WHERE C.v_id=R.v_id) AS M GROUP BY cf, rf DESC) AS F GROUP BY F.cf HAVING max_cf=MAX(max_cf)";
+            demoQuery(query);
+            preDefined();
+            return; 
+        }
+        else if (choice == 6) {
+            query = "SELECT G.v_id, G.fname, G.lname, G.f_id, G.Duration, G.name, G.RN" +
+                    "FROM (SELECT F.v_id, F.fname, F.lname, F.f_id, F.Duration, F.name, DENSE_RANK() OVER (PARTITION BY F.f_id ORDER BY F.Duration DESC) as RN" + 
+                    "FROM (SELECT C.v_id, P.fname, P.lname, C.checkin_end_time, C.f_id, DATEDIFF(C.checkin_end_time, C.checkin_start_time) AS Duration, S.name" +  
+                    "FROM Checks_In C, Patient P, Affected_Info A, Symptoms S WHERE C.v_id=A.v_id AND C.p_id=P.p_id AND A.s_code=S.code) AS F) AS G WHERE G.RN <= 5";
             demoQuery(query);
             preDefined();
             return; 
