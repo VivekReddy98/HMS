@@ -80,13 +80,19 @@ public class DemoQueries {
             return;
         }
         else if (choice == 4) {
-            query = "SELECT f_id FROM Checks_In WHERE neg_exp IS NULL AND v_id = (SELECT aff.v_id  FROM Affected_Info aff, Symptoms symp WHERE aff.s_code = symp.code AND symp.name = 'cardiac');";
+            query = "SELECT f_id FROM Checks_In WHERE neg_code=0 AND v_id = (SELECT aff.v_id  FROM Affected_Info aff, Symptoms symp WHERE aff.s_code = symp.code AND symp.code = 'SYM008');";
             demoQuery(query);
             preDefined();
             return;
         }
         else if (choice == 5) {
             query = "SELECT MAX(M.count_val) AS Maximum FROM (SELECT COUNT(neg_code) AS count_val, f_id FROM Checks_In C WHERE C.neg_code<>0 GROUP BY f_id) AS M";
+            demoQuery(query);
+            preDefined();
+            return; 
+        }
+        else if (choice == 3) {
+            query = "SELECT F.cf AS Parent_Facilty, F.rf AS Referred_Facility, F.max_cf AS Occurences FROM (SELECT cf, rf, count(*) AS max_cf FROM (SELECT C.f_id AS cf, R.f_id as rf  FROM Checks_In C, Referred_to R WHERE C.v_id=R.v_id) AS M GROUP BY cf, rf DESC) AS F GROUP BY F.cf HAVING max_cf=MAX(max_cf)";
             demoQuery(query);
             preDefined();
             return; 
