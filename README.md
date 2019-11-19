@@ -11,12 +11,16 @@ A CSC 540 Course Project on HealthCare Management System
 ## Installation Requirements.
 
 PreRequisites (Ideal) 
-1) Start a Ubuntu 16.04 LTS / Ubuntu 18.04 LTS Virtual Machine on VCL
+1) Start a Ubuntu 16.04 LTS / Ubuntu 18.04 LTS Virtual Machine on VCL.
 
 ### Set up MySQL 8.0 DB. (Dont Use MySQL 5.7)
 1) wget –c https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb
-2) sudo dpkg –i mysql-apt-config_0.8.10-1_all.deb
+2) sudo dpkg –i mysql-apt-config_0.8.11-1_all.deb (If you run into an error type this on the command line)
 3) sudo apt-get update
 4) sudo apt-get install mysql-server
 5) NOTE: In this step, please set your db password and enter n/no in the questions followed by.
 6) sudo mysql_secure_installation
+7) mysql -u root -p (Enter) and then enter your password when prompted. 
+8) If you are logged in use are good to go.
+9) CREATE DATABASE HMS; (Inside the mysql prompt)
+10) For Clear instructions: https://phoenixnap.com/kb/how-to-install-mysql-on-ubuntu-18-04
