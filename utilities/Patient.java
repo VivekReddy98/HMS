@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 public class Patient{
-    int pid;
-    String f_name;
-    int fid;
+    public int pid;
+    public String f_name;
+    public int fid;
     public Patient() {
+
+        StaticFunctions.Initialise();
 
     }
     public Patient(int pid,String f_name) {
@@ -128,122 +131,70 @@ public class Patient{
         rs.next();
         return rs.getInt("v_id");
     }
-    public boolean isValid(String comp, String sev_val, String sev_val2){
-        if(sev_val.matches("[0-9]+") && sev_val2.matches("[0-9]+")){
-            if(comp.equals(">")){
-                return Integer.parseInt(sev_val2) > Integer.parseInt(sev_val);
-            }
-            else if(comp.equals("=")){
-                return Integer.parseInt(sev_val2) == Integer.parseInt(sev_val);
-            }
-            else if(comp.equals("<")){
-                return Integer.parseInt(sev_val2) < Integer.parseInt(sev_val);
-            }
-            else if(comp.equals(">=")){
-                return Integer.parseInt(sev_val2) >= Integer.parseInt(sev_val);
-            }
-            else if(comp.equals("<=")){
-                return Integer.parseInt(sev_val2) <= Integer.parseInt(sev_val);
-            }
-            else if(comp.equals("!=")){
-                return Integer.parseInt(sev_val2) != Integer.parseInt(sev_val);
-            }
-        }
-        return sev_val.equalsIgnoreCase(sev_val2);
-    }
-    public void setPriority(int vid)throws Exception{
-        ResultSet rs, rs2 = null;
-        int temp_id;String priority ="";
-        List<Integer> ar_id = new ArrayList<>();
-        HashMap<Integer,Integer> ar_map = new HashMap<>();
-        SQLExec db = new SQLExec();
-        db.connect();
-        String query = "Select s_code, b_code, sev_value from Affected_Info where v_id = "+vid;
-        try{
-            rs = db.execQuery(query);
-        }
-        catch(Exception e){
-            System.out.println("Error retrieving data from the DB: "+e);
-            db.terminate();
-            return;
-        }
 
-        while(rs.next())
-        {
-            query = "Select *  from Assessment_Rules where s_code = "+rs.getString("s_code")+
-                            " and b_code = "+rs.getString("b_code");
-            try{
-                rs2 = db.execQuery(query);
-            }
-            catch(Exception e){
-                System.out.println("Error retrieving data from the DB: "+e);
-                db.terminate();
-                return;
-            }
-            while(rs2.next())
-            {
-                if(isValid(rs2.getString("comparison"), rs2.getString("severity_val"),
-                            rs.getString("sev_value")))
-                {
-                    temp_id = rs2.getInt("ar_id");
-                    //ar_id.add(rs2.getInt("ar_id"));
-                    if(ar_map.containsKey(temp_id)){
-                        ar_map.put(temp_id,(int)ar_map.get(temp_id)+1);
-                    }
-                    else{
-                        ar_map.put(temp_id,1);
-                    }
-                }
-            }
-            rs = null; rs2 = null;
-            for(int key:ar_map.keySet()){
-                query = "Select count(*) from Assessment_Rules where ar_id = "+key;
+    public int checkOut()throws Exception{
+        ResultSet rs = null;
+        SQLExec db = new SQLExec();
+        int choice;
+        String query;
+        String reason;
+        db.connect();
+
+        PatientCheckoutAck pca = new PatientCheckoutAck();
+        pca.MainView(fid, pid);
+        System.out.println("1.Yes\n2.No\n3.Go Back");
+        System.out.println("Enter choice:(1, 2 or 3)");
+        choice = StaticFunctions.nextInt();
+        StaticFunctions.nextLine();
+        db.connect();
+        do{
+            if(choice == 1){
+
+                query = "Update Checks_In set acknowledged = 'yes' where p_id = "+pid+" and f_id = "+fid;
                 try{
-                    rs = db.execQuery(query);
+                    db.execCommand(query);
                 }
                 catch(Exception e){
                     System.out.println("Error retrieving data from the DB: "+e);
                     db.terminate();
-                    return;
+                    return -1;
                 }
-                if(rs.getInt(0) == ar_map.get(key))
-                {
-                    query = "Select * from Rule_Priority where ar_id = "+key;
-                    try{
-                        rs2 = db.execQuery(query);
-                    }
-                    catch(Exception e){
-                        System.out.println("Error retrieving data from the DB: "+e);
-                        db.terminate();
-                        return;
-                    }
-                    if(rs2.next()){
-                        priority = rs2.getString("priority");
-                    }
-                }
-            }
-        }
+                return 1;
 
-    }
-    public int checkOut()throws Exception{
-        ResultSet rs = null;
-        SQLExec db = new SQLExec();
-        db.connect();
-        String query = "Update Checks_In set acknowledged = 'yes' where p_id = "+pid+" and f_id = "+fid;
-        try{
-            db.execCommand(query);
-        }
-        catch(Exception e){
-            System.out.println("Error retrieving data from the DB: "+e);
-            db.terminate();
-            return -1;
-        }
-        db.terminate();
-        return 1;
+            }
+            else if(choice == 2){
+                System.out.println("Enter a reason for not accepting this magnificient report: ");
+                reason = StaticFunctions.nextLine();
+                query = MessageFormat.format("Update Checks_In set ack_reason = ''{0}'' where p_id = {1} and f_id = {2} and acknowledged = ''no''", reason, String.valueOf(pid), String.valueOf(fid));
+                
+                try{
+                    db.execCommand(query);
+                }
+                catch(Exception e){
+                    System.out.println("Error retrieving data from the DB: "+e);
+                    db.terminate();
+                    return -1;
+                }
+                db.terminate();
+                return 1;
+            }
+            else if(choice == 3){
+                db.terminate();
+                return 1;
+            }
+
+            else{
+                System.out.println("Invalid Entry");
+                continue;
+            }
+
+        }while(2>1);
+
     }
 
     public void MainView() throws Exception{
-        int choice; int result;
+        int choice; 
+        int result;
         getMedicalFacility();
 
         do {

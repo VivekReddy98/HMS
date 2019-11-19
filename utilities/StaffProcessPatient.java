@@ -13,6 +13,7 @@ public class StaffProcessPatient{
     private String staff_id;
     public StaffProcessPatient(String e_id) {
         staff_id = e_id;
+        //StaticFunctions.Initialise();
     }
 
     public void displayPatients() throws Exception{
@@ -20,11 +21,30 @@ public class StaffProcessPatient{
         ResultSet rs = null;
         int choice_opt;
         int i;
+        int fid = 0;
         Vector listofpatients = new Vector();   //To pass code of selected disease
-        String query = "SELECT * FROM Checks_In";
+        Vector namesofpatients = new Vector();
+
         SQLExec db = new SQLExec();
         String userWindows = System.getenv("HMSPATH");
         db.connect();
+
+        String q1 = "Select f.f_id from Facility_has_Dept f, Staff s where s.primary_dept = f.code and s.e_id = '" + staff_id + "'";
+
+        try{
+            rs = db.execQuery(q1);
+        }
+        catch(Exception e){
+            System.out.println("Error retrieving data from the DB: "+e);
+            return;
+        }
+        if(rs.next()){
+            fid = rs.getInt("f_id");
+        }
+
+        String query = "SELECT * FROM Checks_In c, Patient p where c.p_id = p.p_id and c.f_id =" + fid + " and c.treatment = 'false'";
+        System.out.println(query);
+        
         try{
             rs = db.execQuery(query);
         }
@@ -35,7 +55,8 @@ public class StaffProcessPatient{
 
         while(rs.next()) {
             if(rs.getString("checkin_start_time") != null) {
-                listofpatients.add(rs.getString("v_id"));
+                listofpatients.add(rs.getInt("v_id"));
+                namesofpatients.add(rs.getString("fname") +" "+ rs.getString("lname"));
             }
         }
         if (listofpatients.isEmpty()){
@@ -56,23 +77,24 @@ public class StaffProcessPatient{
 //          if(rs.getString("checkin_start_time") != null && rs.getString("treatment").equals("False") ) {
             if(rs.getString("checkin_start_time") != null) {
                 i++;
-                System.out.println(Integer.toString(i) + ". " + rs.getString("v_id"));
+                System.out.println(Integer.toString(i) + ". " + String.valueOf(listofpatients.get(i-1)) + "   " + namesofpatients.get(i-1)) ;
             }
         }
 
         do {
-            System.out.print("\nEnter the ID of patient to select: ");
+            System.out.print("\nEnter your choice: ");
             choice = StaticFunctions.nextInt();
             StaticFunctions.nextLine();
-            if (choice == 3){
-                System.out.println("Go Back Function");
-                return;
-            }
-            if (listofpatients.contains(Integer.toString(choice))) {
-                break;
-            }
-            else{
-                System.out.println("Incorrect Patient ID.");
+            
+            try{
+                if (listofpatients.contains(listofpatients.get(choice-1))){
+                    break;
+                }
+
+            }  
+                
+            catch (Exception e){
+                System.out.println("Incorrect Entry.");
             }
         }while (true);
 
@@ -89,12 +111,14 @@ public class StaffProcessPatient{
                 System.out.println("Invalid Choice");
             }
         }while(choice_opt != 1 && choice_opt != 2 && choice_opt !=3);
+
+        //System.out.println(listofpatients.get(choice-1).getClass());
         switch(choice_opt) {
             case 1:
-                executeChoice_opt(choice, choice_opt);
+                executeChoice_opt((int)listofpatients.get(choice-1), choice_opt);
                 break;
             case 2:
-                executeChoice_opt(choice, choice_opt);
+                executeChoice_opt((int)listofpatients.get(choice-1), choice_opt);
                 break;
             case 3:
                 return;
@@ -182,6 +206,7 @@ public class StaffProcessPatient{
 
     public static void main(String[] args) throws Exception
     {
-
+        StaffProcessPatient spp = new StaffProcessPatient("88001");
+        spp.MainView();
     }
 }

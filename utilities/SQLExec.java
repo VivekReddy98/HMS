@@ -30,12 +30,47 @@ public class SQLExec extends ConnectDB{
       	// Run the Script
   		sr.runScript(reader);	
     }
+
+    public void execTransaction(ReportDS ds) throws SQLException {
+      
+      // System.out.println(ds.Q_trmt);
+      // System.out.println(ds.Q_discharge);
+      // System.out.println(ds.discharge_status);
+      // System.out.println(ds.Q_negex);
+
+      super.conn.setAutoCommit(false);
+      try {
+        this.execCommand(ds.Q_trmt);
+        this.execCommand(ds.Q_discharge);
+        if (ds.discharge_status.equals("Referred")) {
+
+      
+            this.execCommand(ds.Q_Ref_to);
+            int i;
+            for(i=0; i<ds.Q_Ref_Reasons.size(); i++) {
+              this.execCommand(ds.Q_Ref_Reasons.get(i));
+            }
+        }
+
+        if (!ds.Q_negex.equals("Nothing")) {         
+          this.execCommand(ds.Q_negex);
+        }
+        super.conn.commit();
+      } catch (Exception f)
+      {
+        try {
+          super.conn.rollback();
+          System.out.println(f);
+        } 
+        catch (Exception e)
+        {
+          System.out.println("Fucked Up Again!!!!!!!!!!!!!!" + e);
+        }
+      }
+      super.conn.setAutoCommit(true);
+      return;
+      }
+
 }
 
 
-// //Initialize the script runner
-// ScriptRunner sr = new ScriptRunner(con);
-// //Creating a reader object
-// Reader reader = new BufferedReader(new FileReader("E:\\sampleScript.sql"));
-// //Running the script
-// sr.runScript(reader);

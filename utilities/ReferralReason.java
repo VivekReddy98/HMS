@@ -62,7 +62,7 @@ public class ReferralReason {
     
         if (!hashService.containsKey(service)){
             if(!(t == 0)){
-                System.out.println(" Invalied Entry!!!, Enter the code exactly as shown above");
+                System.out.println(" Invalid Entry!!!, Enter the code EXACTLY as shown above");
             }
             t += 1;
             
@@ -136,13 +136,13 @@ public class ReferralReason {
 
     public static void main(String[] args) throws Exception
     {
-        ReferralReason spr = new ReferralReason();
-        ReportDS r_ob = new ReportDS();
-        r_ob.vid = 1;
-        spr.MainView(r_ob);
-        int i;
-        for(i=0; i<r_ob.Q_Ref_Reasons.size(); i++) {
-            System.out.println(r_ob.Q_Ref_Reasons.get(i));
-        }
+        // ReferralReason spr = new ReferralReason();
+        // ReportDS r_ob = new ReportDS();
+        // r_ob.vid = 1;
+        // spr.MainView(r_ob);
+        // int i;
+        // for(i=0; i<r_ob.Q_Ref_Reasons.size(); i++) {
+        //     System.out.println(r_ob.Q_Ref_Reasons.get(i));
+        // }
     }
 }

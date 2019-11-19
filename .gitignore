@@ -25,6 +25,6 @@ hs_err_pid*
 #Environ path File
 setup.sh
 .mycshrc
-ConnectDB.java
+#ConnectDB.java
 DBCOnnectionClass
-
+license.txt

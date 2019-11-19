@@ -1,4 +1,5 @@
-import utilities.*;
+package tests;
+
 import java.sql.*;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import java.io.*;
@@ -8,18 +9,19 @@ public class TestSchemaCreation {
 		CreateTables CT = new CreateTables();
 		while (2>1){
 			System.out.println("What to do?? \n" + 
-								"0. Just Get the Fuck out of this program \n" +
-				                "1. Create Fresh Tables \n" + 
-				                "2. Create AutoIncrement Triggers \n");
+								"0. Just Get out of this program \n" +
+				                "1. Reset Schema \n" + 
+				                "2. Populate Data \n");
 			String pref = System.console().readLine(); 
 
 			if (pref.equals("1"))
 			{
-				CT.FreshTables();
+				CT.newTables();
 			}
 			else if (pref.equals("2"))
 			{
-				CT.FreshIncrementTriggers();
+				CT.populate();
+				break;
 			}
 			else if (pref.equals("0"))
 			{

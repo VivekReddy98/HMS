@@ -17,8 +17,11 @@ public class StaffHome{
     }
     boolean autheticate() throws Exception{
         ResultSet rs = null;
-        String query = "Select e_id, fname from Staff where lname = '" + l_name + "' and dob = TO_DATE('" +
-                dob +"', 'MM/dd/yyyy') and city = '"+ city +"' and designation = 'M'";
+        // String query = "Select e_id, fname from Staff where lname = '" + l_name + "' and dob = TO_DATE('" +
+        //         dob +"', 'MM/dd/yyyy') and city = '"+ city +"' and designation = 'M'";
+        String query = "Select e_id, fname from Staff where lname = '" + l_name + "' and dob = STR_TO_DATE('" +
+                dob +"', '%m/%d/%Y') and city = '"+ city +"' and designation = 'M'";
+
         SQLExec db = new SQLExec();
         db.connect();
 
@@ -98,7 +101,7 @@ public class StaffHome{
                 case 2:
                     TreatedPatient tp = new TreatedPatient();
                     tp.MainView(eid);
-                    System.out.print("Staff checkout patient page");
+                    //System.out.print("Staff checkout patient page");
                     break;
                 case 3:
                     AddSymptoms as = new AddSymptoms();
@@ -109,7 +112,10 @@ public class StaffHome{
                     asev.MainView();
                     break;
                 case 5:
-                    System.out.print("Add assessment rule");
+                   // System.out.print("Add assessment rule");
+
+                    AddRule AR = new AddRule();
+                    AR.MainView();
                     break;
                 case 6:
                     System.out.print("Function for choice 6");

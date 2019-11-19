@@ -1,8 +1,7 @@
-package utilities;
+package tests;
 
 import java.sql.*;
 import java.io.*;
-import utilities.*;
 
 public class CreateTables {
 
@@ -55,7 +54,7 @@ public class CreateTables {
 		sqlexec.terminate();
 	}
 
-	public void FreshTables() throws FileNotFoundException, SQLException
+	public void newTables() throws FileNotFoundException, SQLException
 	{
 		String userWindows = System.getenv("HMSPATH");
 		FileReader pathSchema = new FileReader(userWindows + "sql/createSchema.sql");
@@ -66,10 +65,10 @@ public class CreateTables {
 		
 		this.CreateTables(pathDrop);
 		this.CreateTables(pathSchema);
-		this.CreateTables(pathData);
+		//this.CreateTables(pathData);
 	}
 
-	public void FreshIncrementTriggers() throws FileNotFoundException, SQLException
+	public void populate() throws FileNotFoundException, SQLException
 	{
 		String userWindows = System.getenv("HMSPATH");
 		//this.ClearTriggers();

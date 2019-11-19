@@ -46,12 +46,19 @@ public class TreatedPatient{
         
         System.out.println("\t\tList of treated patients in your facility: ");
 
-        while(rs2.next()) {
+        if (!rs2.next()){
+            System.out.println("No patients treated in this facility.");
+            System.out.println("Press Enter to go back");
+            StaticFunctions.nextLine();
+            return;
+        }
+
+        do {
             i++;
             System.out.println(Integer.toString(i) + ". " + rs2.getString("fname") + " " + rs2.getString("lname"));
             vid_list.add(rs2.getInt("v_id"));
             pat_list.add(rs2.getString("fname") + " " + rs2.getString("lname"));
-        }
+        }while(rs2.next());
 
         System.out.println("Enter the number corresponding to the patient for check out:");
 
@@ -83,8 +90,11 @@ public class TreatedPatient{
     		}
 
     		else if (choice == 1){
-    			//Call checkout(vid);
+                
     			System.out.println("Call checkout(" + vid + "),  parameter: vid");
+
+                StaffPatientReport spr = new StaffPatientReport();
+                spr.MainView(vid);
     		}
     		else{
     			return;

@@ -21,9 +21,17 @@ public class Signup{
         String col_state = "state";
         String col_country = "country";
         ResultSet rs = null;
+
+        // String query = "Select p_id from "+ tab_name + " where " +
+        //         col_fname + " = '" + f_name + "' and " + col_lname + " = '" + l_name + "' and " +
+        //         col_dob + " = TO_DATE('" + dob +"', 'MM/dd/yyyy') and " +
+        //         col_addr_num + " = " + addr_num + " and " + col_street + " = '" + street + "' and " +
+        //         col_state + " = '" + state + "' and " + col_city + " = '" + city + "'";
+
+
         String query = "Select p_id from "+ tab_name + " where " +
                 col_fname + " = '" + f_name + "' and " + col_lname + " = '" + l_name + "' and " +
-                col_dob + " = TO_DATE('" + dob +"', 'MM/dd/yyyy') and " +
+                col_dob + " = STR_TO_DATE('" + dob +"', '%m/%d/%Y') and " +
                 col_addr_num + " = " + addr_num + " and " + col_street + " = '" + street + "' and " +
                 col_state + " = '" + state + "' and " + col_city + " = '" + city + "'";
 
@@ -37,10 +45,15 @@ public class Signup{
         }
         if (!rs.next())
         {
+            // query = "Insert into "+ tab_name + "(" + col_fname + ", " + col_lname + ", " + col_addr_num + ", " +
+            //         col_street + ", " + col_state + ", " + col_city + ", " + col_dob + ") values ('" + f_name +
+            //         "', '" + l_name + "', " + addr_num + ", '" + street + "', '" + state + "', '" + city +
+            //         "', TO_DATE('" + dob +"','dd/MM/yyyy'))";
+
             query = "Insert into "+ tab_name + "(" + col_fname + ", " + col_lname + ", " + col_addr_num + ", " +
                     col_street + ", " + col_state + ", " + col_city + ", " + col_dob + ") values ('" + f_name +
                     "', '" + l_name + "', " + addr_num + ", '" + street + "', '" + state + "', '" + city +
-                    "', TO_DATE('" + dob +"','dd/MM/yyyy'))";
+                    "', STR_TO_DATE('" + dob +"','%m/%d/%Y'))";
             try{
                 db.execCommand(query);
                 System.out.println("\nRegistration successful! Redirecting to main menu.");
@@ -57,10 +70,11 @@ public class Signup{
         }
         db.terminate();
     }
-    public void newPatient() throws Exception{
+    public void MainView() throws Exception{
         String f_name, l_name, dob, street, city, state, country, phone_no;
         int addr_num;
         boolean invalidDate;
+        int choice;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         dateFormat.setLenient(false);
@@ -99,10 +113,6 @@ public class Signup{
         System.out.print("Enter Phone No: ");
         phone_no = StaticFunctions.nextLine();
 
-        addPatient(f_name, l_name, addr_num, street, city, state, country, dob, phone_no);
-    }
-    public void MainView() throws Exception{
-        int choice;
 
         System.out.println("\n\t\tSign Up");
         System.out.println("1. Sign Up");
@@ -118,12 +128,16 @@ public class Signup{
         }while(choice != 1 && choice != 2);
         switch(choice) {
             case 1:
-                newPatient();
-                break;
-            case 2:
+                addPatient(f_name, l_name, addr_num, street, city, state, country, dob, phone_no);
                 return;
-        };
+            case 2:
+            	System.out.println("Discarding changes..");
+                return;
+        }
+
+        
     }
+    
 
     public static void main(String[] args) throws Exception
     {
