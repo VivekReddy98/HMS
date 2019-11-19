@@ -1,19 +1,23 @@
-# HMS
-A CSC 540 Course Project on HealthCare Management System
+# Healthcare Management System
+A CSC 540 (Database Management Concepts and Systems) Course Project on HealthCare Management System.
 
 ## Team Members:
-Saurabh Vinod Shingte - 200312579 - svshingt
-Sahil Papalkar - 200315988 - spapalk
-Sanket Gopalkrishna Pai - 200317341 - sgpai2
-Vivek Reddy Karri – 200315262 - vkarri
+1) Vivek Reddy Karri 
+2) Sahil Papalkar
+3) Sanket Gopalkrishna Pai
+4) Saurabh Vinod Shingte
 
 ## Installation Requirements.
 
-PreRequisites (Ideal) 
+### Software Requirements (This Branch)
+1) Java 8
+2) MySQL 8.0
+
+#### PreRequisites (Ideal) 
 1) Start a Ubuntu 16.04 LTS / Ubuntu 18.04 LTS Virtual Machine on VCL.
 2) How to get started: https://vcl.ncsu.edu/get-help/documentation/how-do-i-get-started/
 
-### Set up MySQL 8.0 DB. (Dont Use MySQL 5.7)
+### Set up MySQL 8.0 DB. (Don't Use MySQL 5.7)
 0) For Clear instructions: https://phoenixnap.com/kb/how-to-install-mysql-on-ubuntu-18-04
 1) wget –c https://dev.mysql.com/get/mysql-apt-config_0.8.11-1_all.deb
 2) sudo dpkg –i mysql-apt-config_0.8.11-1_all.deb (If you run into an error type this on the command line)
@@ -26,7 +30,6 @@ PreRequisites (Ideal)
 
 ### Install open-jdk:
 1) sudo apt-get install openjdk-8-jdk
-
 
 ## Instructions to Populate the Database and Start the Application.
 
