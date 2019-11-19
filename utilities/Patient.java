@@ -163,7 +163,7 @@ public class Patient{
 
             }
             else if(choice == 2){
-                System.out.println("Enter a reason for not accepting this magnificient report, you animal:");
+                System.out.println("Enter a reason for not accepting this magnificient report: ");
                 reason = StaticFunctions.nextLine();
                 query = MessageFormat.format("Update Checks_In set ack_reason = ''{0}'' where p_id = {1} and f_id = {2} and acknowledged = ''no''", reason, String.valueOf(pid), String.valueOf(fid));
                 

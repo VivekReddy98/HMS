@@ -1,0 +1,4 @@
+Main-Class: utilities.HMS
+Class-Path: lib/mybatis-3.5.3.jar lib/mysql-connector-java-5.1.44.jar
+
+

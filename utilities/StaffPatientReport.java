@@ -92,10 +92,13 @@ public class StaffPatientReport{
                     int ch = 0;
                     System.out.println("------------------------------------------------Report--------------------------------");
                     System.out.println("Discharge Status:\t" + r_obj.discharge_status);
-                    System.out.println("Referral Status:\n\tFacility Id is: " + r_obj.f_id + "\n\tReferrer Id is: " + r_obj.e_id + "\n\tReasons are:[Reason Code, Service Code, Description]" );
+                    if (r_obj.discharge_status.equals("Referred")) {
+                    System.out.println("Referral Status:\n\tFacility Id is: " + r_obj.f_id + "\n\tReferrer Id is: " + r_obj.e_id + "\n\tReasons are:[Reason Code,       Service Code,     Description]" );
                     for(i=0; i<r_obj.Q_Ref_Reasons.size(); i++) {
-                         System.out.println(r_obj.Referral_Reasons.get(i));
-                    }
+                        System.out.println("\t")
+                        System.out.print(r_obj.Referral_Reasons.get(i));
+                    }   
+                    } 
                     System.out.println("Treatment given:\t" + r_obj.trmt_description);
                     System.out.println("Negative Experience Code\t:" + r_obj.n_code);
                     System.out.println("Negative Experience description\t:" + r_obj.n_description);

@@ -2,6 +2,7 @@ package utilities;
 public class HMS {
     public HMS() {
         StaticFunctions.Initialise();
+        
     }
     public void MainView() throws Exception{
         int choice;

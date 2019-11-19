@@ -43,7 +43,7 @@ public class PatientCheckoutAck{
 
         }
         else{
-        	System.out.println("There are no unacknowledged reports for you, fuck off");
+        	System.out.println("There are no unacknowledged reports for you, sorry");
         	db.terminate();
         	return;
         }
