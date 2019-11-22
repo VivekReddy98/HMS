@@ -1,5 +1,4 @@
 # Healthcare Management System
-A CSC 540 (Database Management Concepts and Systems) Course Project on HealthCare Management System.
 
 ## Team Members:
 1) Vivek Reddy Karri 
